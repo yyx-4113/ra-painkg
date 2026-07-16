@@ -42,6 +42,18 @@ We selected RA-PainKG as a worked example of a domain-specific KG [4]. It was co
 
 The central biomedical informatics question is: **does domain specificity improve prediction, or is graph connectivity sufficient regardless of edge semantics?** To answer this, we designed a comprehensive ablation benchmark isolating three factors: graph density, domain specificity, and structural topology. We hypothesize that the density-dominant mechanism we identify may generalize to any disease where domain KGs are substantially sparser than GO—which describes most rare and understudied conditions.
 
+
+**Significance Statement**
+
+*Problem:* Knowledge graph (KG) evaluation in gene perturbation prediction relies predominantly on single train/test splits, with no established methodology for separating the effects of graph density from domain-specific edge semantics.
+
+*What is Known:* General-purpose KGs such as Gene Ontology improve perturbation prediction, but whether domain-specific KGs confer additional advantages remains unresolved.
+
+*What this Paper Adds:* We provide causal evidence, via a multi-split ablation benchmark of 11 KG variants, that graph connectivity—not edge identity—drives linear perturbation prediction. We document a single-split artifact where a domain KG appeared superior but the effect reversed under multi-split averaging, demonstrating that prevailing evaluation practices produce misleading conclusions. The open-source framework includes paired statistics, Kendall's W ranking consistency, and sensitivity analyses.
+
+*Who Benefits:* Biomedical informaticians integrating prior knowledge into machine learning pipelines, KG curators evaluating domain-specific resources, and perturbation prediction method developers seeking rigorous benchmarking standards.
+
+
 ---
 
 ## 2. Materials and Methods
