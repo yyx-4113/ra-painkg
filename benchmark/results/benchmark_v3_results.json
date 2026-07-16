@@ -1,0 +1,42 @@
+{
+  "RA-PainKG": {
+    "kg": "RA-PainKG",
+    "test_pearson_r": 0.0087,
+    "pain_pearson_r": 0.014,
+    "test_mse": 0.037971,
+    "pain_mse": 0.04262,
+    "top10_overlap_all": 0.0751,
+    "top10_overlap_pain": 0.0395,
+    "time_s": 2.9
+  },
+  "STRING-like": {
+    "kg": "STRING-like",
+    "test_pearson_r": 0.0234,
+    "pain_pearson_r": 0.0352,
+    "test_mse": 0.037073,
+    "pain_mse": 0.041446,
+    "top10_overlap_all": 0.1016,
+    "top10_overlap_pain": 0.0863,
+    "time_s": 2.9
+  },
+  "GO-BP-like": {
+    "kg": "GO-BP-like",
+    "test_pearson_r": 0.0173,
+    "pain_pearson_r": 0.0209,
+    "test_mse": 0.037516,
+    "pain_mse": 0.042187,
+    "top10_overlap_all": 0.0778,
+    "top10_overlap_pain": 0.0841,
+    "time_s": 2.9
+  },
+  "Random": {
+    "kg": "Random",
+    "test_pearson_r": 0.0251,
+    "pain_pearson_r": 0.0393,
+    "test_mse": 0.037922,
+    "pain_mse": 0.042352,
+    "top10_overlap_all": 0.0991,
+    "top10_overlap_pain": 0.0833,
+    "time_s": 3.3
+  }
+}

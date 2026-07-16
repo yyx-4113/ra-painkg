@@ -1,0 +1,226 @@
+{
+  "graph_name": "RA-PainKG",
+  "version": "1.0",
+  "date": "2026-07-15",
+  "data_sources": [
+    "PrimeKG",
+    "GTEx v8",
+    "PubMed literature mining"
+  ],
+  "total_nodes": 18069,
+  "total_edges": 127226,
+  "node_type_distribution": {
+    "gene/protein": 8559,
+    "biological_process": 3123,
+    "disease": 2228,
+    "drug": 1932,
+    "pathway": 631,
+    "effect/phenotype": 612,
+    "molecular_function": 461,
+    "cellular_component": 292,
+    "anatomy": 148,
+    "exposure": 83
+  },
+  "edge_relation_distribution": {
+    "protein_protein": 28972,
+    "anatomy_protein_present": 27652,
+    "bioprocess_protein": 20754,
+    "disease_protein": 12578,
+    "drug_effect": 10386,
+    "pathway_protein": 4926,
+    "drug_protein": 4760,
+    "disease_phenotype_positive": 4456,
+    "cellcomp_protein": 3110,
+    "molfunc_protein": 2738,
+    "bioprocess_bioprocess": 2732,
+    "phenotype_protein": 1036,
+    "indication": 670,
+    "anatomy_protein_absent": 614,
+    "disease_disease": 350,
+    "pathway_pathway": 350,
+    "exposure_protein": 322,
+    "phenotype_phenotype": 238,
+    "contraindication": 190,
+    "off-label use": 182,
+    "exposure_bioprocess": 148,
+    "disease_phenotype_negative": 32,
+    "exposure_disease": 28,
+    "cellcomp_cellcomp": 2
+  },
+  "seed_nodes": {
+    "ra_disease": 66,
+    "pain_phenotype": 144,
+    "pain_gene_protein": 190,
+    "pain_biological_process": 445,
+    "pain_pathway": 78
+  },
+  "track_genes": {
+    "track_a_inflammation": 106,
+    "track_b_nociception": 122,
+    "dual_track": 96
+  },
+  "top_hubs_by_betweenness": [
+    {
+      "node_name": "EGR1",
+      "betweenness": 0.1950237929974715
+    },
+    {
+      "node_name": "FOS",
+      "betweenness": 0.1458729928210597
+    },
+    {
+      "node_name": "STAT3",
+      "betweenness": 0.0975041850316676
+    },
+    {
+      "node_name": "AKT1",
+      "betweenness": 0.0847705182018543
+    },
+    {
+      "node_name": "SRC",
+      "betweenness": 0.0801746178455017
+    },
+    {
+      "node_name": "JUN",
+      "betweenness": 0.0784788229620843
+    },
+    {
+      "node_name": "RELA",
+      "betweenness": 0.0659086492929486
+    },
+    {
+      "node_name": "NFKB1",
+      "betweenness": 0.0636918026093728
+    },
+    {
+      "node_name": "TRAF1",
+      "betweenness": 0.0622059429756108
+    },
+    {
+      "node_name": "IKBKG",
+      "betweenness": 0.0620108775496631
+    },
+    {
+      "node_name": "CREB1",
+      "betweenness": 0.0613303926482806
+    },
+    {
+      "node_name": "FYN",
+      "betweenness": 0.0609878476393763
+    },
+    {
+      "node_name": "PRKCA",
+      "betweenness": 0.0596962039523039
+    },
+    {
+      "node_name": "MAPK14",
+      "betweenness": 0.0494227429834514
+    },
+    {
+      "node_name": "ATF3",
+      "betweenness": 0.0407754134967812
+    },
+    {
+      "node_name": "MAPK1",
+      "betweenness": 0.0399073670072167
+    },
+    {
+      "node_name": "UBC",
+      "betweenness": 0.0347613791830098
+    },
+    {
+      "node_name": "PRKCD",
+      "betweenness": 0.0315616084283197
+    },
+    {
+      "node_name": "MAPK3",
+      "betweenness": 0.0272116679566278
+    },
+    {
+      "node_name": "MTOR",
+      "betweenness": 0.0263033429664739
+    }
+  ],
+  "top_hubs_by_pagerank": [
+    {
+      "node_name": "EGR1",
+      "pagerank": 0.0362183974840747
+    },
+    {
+      "node_name": "FOS",
+      "pagerank": 0.025333841920841
+    },
+    {
+      "node_name": "STAT3",
+      "pagerank": 0.0196633018716391
+    },
+    {
+      "node_name": "JUN",
+      "pagerank": 0.0188240393115296
+    },
+    {
+      "node_name": "SRC",
+      "pagerank": 0.01739490065705
+    },
+    {
+      "node_name": "AKT1",
+      "pagerank": 0.0163590140766068
+    },
+    {
+      "node_name": "FYN",
+      "pagerank": 0.0143753162978594
+    },
+    {
+      "node_name": "ATF3",
+      "pagerank": 0.012928365873778
+    },
+    {
+      "node_name": "MAPK1",
+      "pagerank": 0.012531895442587
+    },
+    {
+      "node_name": "PRKCA",
+      "pagerank": 0.0124727634467647
+    },
+    {
+      "node_name": "IKBKG",
+      "pagerank": 0.0114788358511774
+    },
+    {
+      "node_name": "NFKB1",
+      "pagerank": 0.0114130227220321
+    },
+    {
+      "node_name": "TRAF1",
+      "pagerank": 0.0112234856529914
+    },
+    {
+      "node_name": "RELA",
+      "pagerank": 0.0110537252112053
+    },
+    {
+      "node_name": "MAPK14",
+      "pagerank": 0.0108798521590444
+    },
+    {
+      "node_name": "CREB1",
+      "pagerank": 0.0093860578165408
+    },
+    {
+      "node_name": "MAPK3",
+      "pagerank": 0.0092360067236119
+    },
+    {
+      "node_name": "MAPK8",
+      "pagerank": 0.0080867090115489
+    },
+    {
+      "node_name": "STX1A",
+      "pagerank": 0.0064413967833644
+    },
+    {
+      "node_name": "MTOR",
+      "pagerank": 0.0063418075478814
+    }
+  ]
+}

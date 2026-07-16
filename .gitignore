@@ -1,0 +1,28 @@
+# Large data files
+benchmark/data/norman.zip
+benchmark/data/norman/
+benchmark/data/perturb_processed.h5ad
+benchmark/data/string_human_ppi.txt.gz
+benchmark/data/string_mapping.tsv
+
+# Output graph files (large)
+output/*.graphml
+output/*.pkl
+output/RA_PainKG*.csv
+output/ra_pain_kg*.csv
+output/seed_nodes.csv
+output/gene_centrality.csv
+output/pain_genes_gtex_expression.csv
+output/pain_gene_literature_evidence.csv
+output/track_assignments.csv
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+
+# Backup files
+*.bak*

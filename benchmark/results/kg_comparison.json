@@ -1,0 +1,45 @@
+{
+  "summary": [
+    {
+      "KG": "RA-PainKG (PPI only)",
+      "Genes": 165,
+      "Edges": 390,
+      "Density": 0.014325,
+      "Mean_degree": 4.7
+    },
+    {
+      "KG": "RA-PainKG (combined)",
+      "Genes": 165,
+      "Edges": 390,
+      "Density": 0.014325,
+      "Mean_degree": 4.7
+    },
+    {
+      "KG": "RA-PainKG (Track A)",
+      "Genes": 165,
+      "Edges": 305,
+      "Density": 0.011203,
+      "Mean_degree": 3.7
+    },
+    {
+      "KG": "RA-PainKG (Track B)",
+      "Genes": 165,
+      "Edges": 287,
+      "Density": 0.010542,
+      "Mean_degree": 3.5
+    },
+    {
+      "KG": "RA-PainKG (Dual)",
+      "Genes": 165,
+      "Edges": 263,
+      "Density": 0.00966,
+      "Mean_degree": 3.2
+    }
+  ],
+  "gene_counts": {
+    "total": 165,
+    "track_a": 106,
+    "track_b": 122,
+    "dual": 96
+  }
+}

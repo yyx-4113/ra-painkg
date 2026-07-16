@@ -1,0 +1,144 @@
+{
+  "gene_vocabulary_size": 165,
+  "track_distribution": {
+    "A_only": 10,
+    "B_only": 26,
+    "dual": 96,
+    "none": 33
+  },
+  "kg_summary": [
+    {
+      "KG": "RA-PainKG PPI",
+      "Genes": 165,
+      "Edges": 390,
+      "Density": 0.014325,
+      "Mean_degree": 4.7
+    },
+    {
+      "KG": "RA-PainKG Combined",
+      "Genes": 165,
+      "Edges": 390,
+      "Density": 0.014325,
+      "Mean_degree": 4.7
+    },
+    {
+      "KG": "RA-PainKG TrackA",
+      "Genes": 165,
+      "Edges": 305,
+      "Density": 0.011203,
+      "Mean_degree": 3.7
+    },
+    {
+      "KG": "RA-PainKG TrackB",
+      "Genes": 165,
+      "Edges": 287,
+      "Density": 0.010542,
+      "Mean_degree": 3.5
+    },
+    {
+      "KG": "RA-PainKG Dual",
+      "Genes": 165,
+      "Edges": 263,
+      "Density": 0.00966,
+      "Mean_degree": 3.2
+    },
+    {
+      "KG": "Random (PPI density)",
+      "Genes": 165,
+      "Edges": 390,
+      "Density": 0.014325,
+      "Mean_degree": 4.7
+    },
+    {
+      "KG": "Random (Combined density)",
+      "Genes": 165,
+      "Edges": 390,
+      "Density": 0.014325,
+      "Mean_degree": 4.7
+    },
+    {
+      "KG": "Identity",
+      "Genes": 165,
+      "Edges": 82,
+      "Density": 0.003012,
+      "Mean_degree": 1.0
+    }
+  ],
+  "top_bridge_genes": [
+    {
+      "gene": "STAT3",
+      "track": "dual",
+      "bridge_score": 35
+    },
+    {
+      "gene": "RELA",
+      "track": "dual",
+      "bridge_score": 24
+    },
+    {
+      "gene": "JUN",
+      "track": "dual",
+      "bridge_score": 22
+    },
+    {
+      "gene": "IKBKB",
+      "track": "dual",
+      "bridge_score": 21
+    },
+    {
+      "gene": "IKBKG",
+      "track": "dual",
+      "bridge_score": 21
+    },
+    {
+      "gene": "NFKB1",
+      "track": "dual",
+      "bridge_score": 18
+    },
+    {
+      "gene": "AKT1",
+      "track": "dual",
+      "bridge_score": 16
+    },
+    {
+      "gene": "MAPK1",
+      "track": "dual",
+      "bridge_score": 16
+    },
+    {
+      "gene": "EGR1",
+      "track": "dual",
+      "bridge_score": 15
+    },
+    {
+      "gene": "FOS",
+      "track": "dual",
+      "bridge_score": 15
+    },
+    {
+      "gene": "FYN",
+      "track": "dual",
+      "bridge_score": 15
+    },
+    {
+      "gene": "SRC",
+      "track": "dual",
+      "bridge_score": 15
+    },
+    {
+      "gene": "LYN",
+      "track": "dual",
+      "bridge_score": 14
+    },
+    {
+      "gene": "TNF",
+      "track": "A",
+      "bridge_score": 13
+    },
+    {
+      "gene": "TNFRSF1A",
+      "track": "dual",
+      "bridge_score": 13
+    }
+  ]
+}

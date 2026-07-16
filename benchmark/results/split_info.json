@@ -1,0 +1,10 @@
+{
+  "n_total": 2000,
+  "n_genes": 265,
+  "n_pain_genes": 165,
+  "n_extra_genes": 100,
+  "n_train": 1589,
+  "n_test": 411,
+  "n_perturbations": 30,
+  "n_test_perturbations": 6
+}

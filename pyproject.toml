@@ -1,0 +1,24 @@
+﻿[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "ra-painkg"
+version = "1.0.0"
+description = "Tissue-specific knowledge graph for rheumatoid arthritis pain signaling"
+requires-python = ">=3.10"
+dependencies = [
+    "networkx>=3.0",
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+    "biopython>=1.81",
+]
+license = {text = "MIT"}
+authors = [
+    {name = "RA-PainKG Team"}
+]
+
+[project.scripts]
+ra-painkg = "ra_painkg.pipeline:run_pipeline"

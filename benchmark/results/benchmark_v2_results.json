@@ -1,0 +1,42 @@
+{
+  "RA-PainKG (ground truth)": {
+    "test_pearson_r": 0.0020348778742980537,
+    "test_mse": 0.02383586091120231,
+    "pain_pearson_r": -0.0018673131515350343,
+    "pain_mse": 0.023431748005948695,
+    "train_mse": 0.022542320549238222,
+    "time_s": 0.8
+  },
+  "STRING-like": {
+    "test_pearson_r": 0.006021630481349794,
+    "test_mse": 0.0238353269800382,
+    "pain_pearson_r": 0.0033831999835045026,
+    "pain_mse": 0.023430532099994544,
+    "train_mse": 0.02254231968291599,
+    "time_s": 0.8
+  },
+  "GO-BP-like": {
+    "test_pearson_r": 5.811641707147077e-05,
+    "test_mse": 0.023797572735377595,
+    "pain_pearson_r": 0.0015522581138730461,
+    "pain_mse": 0.023376155744968825,
+    "train_mse": 0.022542319810445487,
+    "time_s": 0.8
+  },
+  "Random": {
+    "test_pearson_r": 0.0028454799973855974,
+    "test_mse": 0.02380750073276464,
+    "pain_pearson_r": 0.001496991388118862,
+    "pain_mse": 0.02338777361655785,
+    "train_mse": 0.022542319637201325,
+    "time_s": 0.8
+  },
+  "Identity": {
+    "test_pearson_r": NaN,
+    "test_mse": 0.023729340551312213,
+    "pain_pearson_r": NaN,
+    "pain_mse": 0.023311327958907547,
+    "train_mse": 0.02254231869588552,
+    "time_s": 0.8
+  }
+}
