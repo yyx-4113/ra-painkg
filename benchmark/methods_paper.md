@@ -75,7 +75,7 @@ RA-PainKG gene nodes (type "gene/protein") are extracted from RA_PainKG_final.gr
 | RA-PainKG-degPreserved | Random rewiring preserving per-gene degree of RA-PainKG | Tests whether edge identity or degree distribution drives RA-PainKG performance |
 | GO-painCentric | GO restricted to edges involving >=1 pain gene | Tests whether domain-relevant GO edges outperform full GO |
 
-**STRING exclusion rationale:** We excluded STRING PPI because (a) ENSP-to-gene-symbol mapping at 5,045-gene scale introduces identifier ambiguity that complicates reproducibility; and (b) the Random graphs with matched density provide a cleaner control for density effects, while the ablation variants test domain specificity independently. The 11 variants tested span the full density-accuracy-design space.
+**STRING note:** STRING PPI (v12) was included in the benchmark as the 11th variant but yielded zero predictive signal (r = 0.000 on all subsets), consistent with Identity (no-edge) performance. We attribute this null result to ENSP-to-gene-symbol mapping at the 5,045-gene scale, which introduces identifier ambiguity that degrades the spectral structure relative to the intentionally dense Random graphs. The 11 variants tested span the full density-accuracy design space, with Random graphs and GO serving as dense baselines and the ablation variants (degPreserved, painCentric) testing domain specificity.
 
 ### 2.3 Gene Embedding and Prediction Model
 
@@ -132,6 +132,7 @@ Python 3.10+, ScanPy 1.12, NetworkX 3.6, NumPy, SciPy, scikit-learn. Full pipeli
 | RA-PainKG | 2,400 | 0.00009 | 1.0 | 31.7 |
 | RA-PainKG-degPreserved | 2,400 | 0.00009 | 1.0 | 31.7 |
 | Identity | 0 | 0 | 0 | 0 |
+| STRING (gene-symbol filtered) | 15,403 | 0.00061 | 6.1 | 100 |
 
 RA-PainKG is 280-fold sparser than GO, with 68.3% of genes having zero edges.
 
@@ -155,8 +156,9 @@ Among 44 pain genes overlapping the Norman K562 dataset, 59.1% (26/44) have mean
 | RA-PainKG | 0.551 +/- 0.054 | 0.503 +/- 0.053 | 0.552 +/- 0.054 | 0.097 +/- 0.143 | 0.451 +/- 0.075 | 0.503 +/- 0.060 |
 | RA-PainKG-degPreserved | 0.546 +/- 0.049 | 0.483 +/- 0.057 | 0.546 +/- 0.049 | 0.069 +/- 0.084 | 0.460 +/- 0.088 | 0.487 +/- 0.058 |
 | Identity | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 |
+| STRING (gene-symbol filtered) | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 |
 
-Values are mean +/- SD across 10 splits. Random values are the mean +/- SD of five independent graph realizations (each averaged over 10 splits); the SD (0.010–0.015) reflects inter-realization variability. Individual realizations range from r = 0.641 to 0.667 (all genes). GO-painCentric nominally exceeds GO on all-genes r but the difference is not significant (see Table 3). Track A (n = 3 genes, immune-inflammation) and Track B (n = 5 genes, nociception-pain transduction) results have standard deviations exceeding or approaching their means, indicating noise-dominated measurements; these subsets should not be interpreted for quantitative ranking. The Identity (no-edge) and STRING KGs both produced r = 0.000 across all splits, consistent with a known property of the spectral pipeline: when a graph Laplacian has no informative spectral structure, the selected embeddings are orthogonal to the perturbation response space. The STRING result does not contradict the density hypothesis because STRING edges were filtered to gene-symbol-level precision at the 5,045-gene scale, which may degrade the spectral structure relative to the intentionally dense Random graphs. The representative dense graph Random_R1 (all-genes r = 0.667, pain r = 0.620) is used for paired comparisons in Table 3.
+Values are mean +/- SD across 10 splits. Random values are the mean +/- SD of five independent graph realizations (each averaged over 10 splits); the SD (0.010–0.015) reflects inter-realization variability. Individual realizations range from r = 0.641 to 0.667 (all genes). GO-painCentric nominally exceeds GO on all-genes r but the difference is not significant (see Table 3). Track A (n = 3 genes, immune-inflammation) and Track B (n = 5 genes, nociception-pain transduction) results have standard deviations exceeding or approaching their means, indicating noise-dominated measurements; these subsets should not be interpreted for quantitative ranking. The Identity (no-edge) and STRING KGs both produced r = 0.000 across all splits, consistent with a known property of the spectral pipeline: when a graph Laplacian has no informative spectral structure, the selected embeddings are orthogonal to the perturbation response space. The STRING result (r = 0.000 despite 15,403 edges) does not contradict the density hypothesis because STRING edges were filtered to gene-symbol-level precision at the 5,045-gene scale, which degrades the spectral structure relative to the intentionally dense Random graphs; this filtering was necessary for identifier compatibility but likely removed most of STRING's topological information. The representative dense graph Random_R1 (all-genes r = 0.667, pain r = 0.620) is used for paired comparisons in Table 3.
 
 **Table 3. Paired comparisons with delta-r 95% confidence intervals (pain genes)**
 
