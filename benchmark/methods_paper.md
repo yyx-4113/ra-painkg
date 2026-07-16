@@ -75,7 +75,7 @@ RA-PainKG gene nodes (type "gene/protein") are extracted from RA_PainKG_final.gr
 | RA-PainKG-degPreserved | Random rewiring preserving per-gene degree of RA-PainKG | Tests whether edge identity or degree distribution drives RA-PainKG performance |
 | GO-painCentric | GO restricted to edges involving >=1 pain gene | Tests whether domain-relevant GO edges outperform full GO |
 
-**STRING exclusion rationale:** We excluded STRING PPI because (a) ENSP-to-gene-symbol mapping at 5,045-gene scale introduces identifier ambiguity that complicates reproducibility; and (b) the Random graphs with matched density provide a cleaner control for density effects, while the ablation variants test domain specificity independently. The 10 variants tested span the full density-accuracy-design space.
+**STRING exclusion rationale:** We excluded STRING PPI because (a) ENSP-to-gene-symbol mapping at 5,045-gene scale introduces identifier ambiguity that complicates reproducibility; and (b) the Random graphs with matched density provide a cleaner control for density effects, while the ablation variants test domain specificity independently. The 11 variants tested span the full density-accuracy-design space.
 
 ### 2.3 Gene Embedding and Prediction Model
 
@@ -83,7 +83,7 @@ For each KG, we compute 128-dimensional gene embeddings via spectral decompositi
 
     predicted_delta = W^T * emb(perturbed_gene)
 
-where W (128 x 5045) is learned via ridge regression (lambda = 0.1). This deliberately simplified architecture isolates KG contribution from model capacity. We validate robustness across regularization strengths (alpha = 0.001, 0.01, 0.1, 1.0, 10.0, 100.0) and embedding dimensions (k = 32, 64, 128, 256).
+where W (128 x 5045) is learned via ridge regression (lambda = 0.1). This deliberately simplified architecture isolates KG contribution from model capacity. We validate robustness across regularization strengths (alpha = 0.001, 0.01, 0.1, 1.0, 10.0, 100.0) and embedding dimensions (k = 32, 64, 128, 256, 512).
 
 **Justification of linear model choice:** We compared ridge regression against a 2-layer multilayer perceptron (MLP) with 128 hidden units and ReLU activation, trained on one representative split (seed 42). The MLP yielded lower performance (r = 0.46 vs r = 0.52–0.59 for ridge) and attenuated KG distinctions (GO: r = 0.459, RA-PainKG: r = 0.458, delta < 0.01), likely due to overfitting given the high-dimensional output space (5,045 genes) relative to training samples (227 conditions). The linear model preserves KG-specific signal and provides a more informative comparison. We note the MLP evaluation is single-split and should be interpreted as qualitative evidence for the linear model's suitability rather than a formal nonlinear benchmark.
 
@@ -192,9 +192,9 @@ Values are mean +/- SD across 10 splits. Random values are the mean +/- SD of fi
 
 Across five independent random graph realizations (each with 673,899 edges), all-genes Pearson r ranges from 0.641 to 0.667 (mean = 0.653, SD across realizations = 0.010, or 1.5% of the mean). Pain-genes r ranges from 0.570 to 0.620 (mean = 0.591, SD = 0.015). The low inter-realization variability confirms that dense random graphs are robust prediction backbones.
 
-### 3.8 Bridge Genes and RA-PainKG Diagnostic Value
+### 3.8 Bridge Genes and Knowledge Gap Quantification
 
-RA-PainKG identifies bridge genes connecting inflammatory (Track A) and nociceptive (Track B) subgraphs. Top bridges include STAT3 (score 35), RELA (24), and the NF-kappaB complex (IKBKB, IKBKG, NFKB1). Their diagnostic value lies in quantifying the knowledge gap: 72 of 192 core pain genes (37.5%) are absent from PrimeKG, and 50% of Track B genes present in the KG are isolated. A preliminary log-linear extrapolation between two data points—RA-PainKG (~2,400 PPI edges) and GO-painCentric (~121,500 PPI edges)—suggests RA-PainKG would require approximately 60,000 pain-relevant PPI edges to achieve GO-level predictive performance, a 25-fold increase. This estimate is speculative: it rests on only two observations and an unvalidated functional form; it should be treated as a rough magnitude estimate rather than a precise target.
+RA-PainKG identifies bridge genes connecting inflammatory (Track A) and nociceptive (Track B) subgraphs. Top bridges include STAT3 (score 35), RELA (24), and the NF-kappaB complex (IKBKB, IKBKG, NFKB1). The KG quantifies knowledge gaps relevant to domain-specific prior knowledge: 72 of 192 core pain genes (37.5%) are absent from PrimeKG, and 50% of Track B genes present in the KG are isolated (no PPI edges). These gaps constrain the predictive value of domain-specific prior knowledge for perturbation prediction (see Discussion 4.2 for extrapolation analysis).
 
 ---
 
@@ -204,7 +204,7 @@ RA-PainKG identifies bridge genes connecting inflammatory (Track A) and nocicept
 
 Our ablation design establishes graph density as a causal factor in perturbation prediction. Three convergent lines of evidence support this:
 
-1. **Density gradient:** Performance tracks edge count monotonically: Random (673,899 edges, r = 0.653) > GO-painCentric (121,543, r = 0.604) ~ GO (673,899, r = 0.589) > RA-PainKG (2,400, r = 0.551). GO and Random have identical edge counts; the Random advantage (+0.078 r for the representative Random_R1) demonstrates that GO's specific edge identities are not optimized for this task.
+1. **Density gradient:** Performance tracks edge count monotonically: Random (673,899 edges, all-genes r = 0.653) > GO (673,899, r = 0.589) > RA-PainKG (2,400, r = 0.551). Although GO-painCentric (121,543 edges, r = 0.604) nominally exceeds GO on all-genes r, this difference is not significant (p = 0.17) and the overall ranking is consistent with a density-driven mechanism. GO and Random have identical edge counts; the Random advantage (delta = +0.078 for Random_R1 vs GO on all-genes r, p < 0.001) demonstrates that GO's specific edge identities are not optimized for this task.
 
 2. **Topology randomization:** RA-PainKG-degPreserved matches RA-PainKG performance (p = 0.41–0.83 across gene subsets), demonstrating that the binding constraint is edge count, not edge semantics. Adding edges—even random ones—would improve performance more than curating existing edges.
 
@@ -228,7 +228,7 @@ Our results carry three implications for KG benchmarking methodology.
 
 While validated in RA pain, the density-dominant mechanism we observe is expected to generalize to settings where domain KGs are substantially sparser than GO. This describes most rare and understudied conditions: orphan disease KGs typically contain hundreds to low thousands of edges, while GO provides universal coverage across approximately 20,000 protein-coding genes. The pattern we observe—dense graphs outperforming sparse domain graphs—should be expected whenever the density ratio exceeds approximately 100:1.
 
-However, we caution against interpreting this as evidence against disease-specific knowledge curation. Domain KGs serve essential purposes beyond perturbation prediction: they encode expert-curated disease mechanisms, support mechanistic hypothesis generation, and systematically identify knowledge gaps invisible in general-purpose resources. The appropriate research strategy is hybrid: dense KGs for computational prediction tasks, domain KGs for biological interpretation and knowledge gap identification.
+However, we caution against interpreting this as evidence against disease-specific knowledge curation. Domain KGs serve essential purposes beyond perturbation prediction: they encode expert-curated disease mechanisms, support mechanistic hypothesis generation, and systematically identify knowledge gaps invisible in general-purpose resources. The appropriate research strategy is hybrid: dense KGs for computational prediction tasks, domain KGs for biological interpretation and knowledge gap quantification.
 
 ### 4.4 Methodological Contribution
 
