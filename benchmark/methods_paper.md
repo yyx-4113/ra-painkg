@@ -8,7 +8,7 @@
 
 **Yongxin Yang (杨永新)**<sup>1,*</sup>
 
-<sup>1</sup> Department of Anesthesiology, The Second People's Hospital Affiliated to Fujian University of Traditional Chinese Medicine, Fuzhou 350000, Fujian, China
+<sup>1</sup> Department of Anesthesiology, The Second Affiliated Hospital of Fujian University of Traditional Chinese Medicine, Fuzhou 350000, Fujian, China
 
 <sup>*</sup> Corresponding author: 960856791@qq.com
 
@@ -268,7 +268,7 @@ The K562 test system severely limits pain-specific conclusions (59.1% of measura
 
 ## Acknowledgements
 
-The author thanks the Norman lab and the Gene Ontology Consortium for making their data publicly available. This research was supported by institutional resources from The Second People's Hospital Affiliated to Fujian University of Traditional Chinese Medicine.
+The author thanks the Norman lab and the Gene Ontology Consortium for making their data publicly available. This research was supported by institutional resources from The Second Affiliated Hospital of Fujian University of Traditional Chinese Medicine.
 
 ## Author Contributions
 

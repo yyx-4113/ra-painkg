@@ -7,7 +7,7 @@
 
 **From:** Yongxin Yang (杨永新)
 Department of Anesthesiology
-The Second People's Hospital Affiliated to Fujian University of Traditional Chinese Medicine
+The Second Affiliated Hospital of Fujian University of Traditional Chinese Medicine
 Fuzhou 350000, Fujian, China
 Email: 960856791@qq.com
 

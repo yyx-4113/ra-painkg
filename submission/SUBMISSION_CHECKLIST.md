@@ -24,7 +24,7 @@
 ### Manuscript Metadata for Submission Form
 - **Title:** Domain-Specific versus Dense Knowledge Graphs for Gene Perturbation Prediction: A Multi-Split Ablation Benchmark
 - **Author:** Yongxin Yang (杨永新)
-- **Affiliation:** Department of Anesthesiology, The Second People's Hospital Affiliated to Fujian University of Traditional Chinese Medicine, Fuzhou 350000, Fujian, China
+- **Affiliation:** Department of Anesthesiology, The Second Affiliated Hospital of Fujian University of Traditional Chinese Medicine, Fuzhou 350000, Fujian, China
 - **Email:** 960856791@qq.com
 - **Article Type:** Methodology / Research Article
 - **Keywords:** knowledge graphs; perturbation prediction; benchmark methodology; ablation study; multi-split validation; rheumatoid arthritis
