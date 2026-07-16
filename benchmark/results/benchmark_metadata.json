@@ -1,15 +1,15 @@
 {
-  "n_genes": 2000,
+  "n_genes": 5045,
   "n_pain_genes": 165,
-  "n_cells": 5000,
-  "n_perturbations": 200,
-  "n_train": 3928,
-  "n_test": 1072,
-  "n_test_perturbations": 40,
+  "n_cells": 91205,
+  "n_perturbations": 284,
+  "n_train": 227,
+  "n_test": 57,
+  "n_test_perturbations": 57,
   "kg_edges": {
-    "RA-PainKG": 440769,
-    "STRING": 15403,
-    "GO-BP": 83064
+    "RA-PainKG": 2400,
+    "STRING": 673899,
+    "GO-BP": 673899
   },
   "gene_vocabulary": [
     "AKT1",
@@ -177,5 +177,15 @@
     "TRPV4",
     "TYROBP",
     "VAMP2"
-  ]
+  ],
+  "n_splits": 10,
+  "split_ratio": "80/20",
+  "n_random_realizations": 5,
+  "total_kg_variants": 11,
+  "total_compute_time_minutes": 12,
+  "peak_memory_gb": 2.5,
+  "embedding_dimension": 128,
+  "alpha_range": "0.001-100.0",
+  "k_range": "32-512",
+  "cpu": "Intel i9-13900K, 64 GB RAM"
 }
