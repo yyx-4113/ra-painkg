@@ -18,9 +18,9 @@
 
 **Objective:** To determine whether domain-specific knowledge graphs (KGs) improve gene perturbation prediction over general-purpose KGs, using a rheumatoid arthritis (RA) pain signaling KG (RA-PainKG) as the test case.
 
-**Materials and Methods:** We benchmarked 10 KG variants—GO Biological Process, RA-PainKG, five dense random graphs (673,899 edges each), two ablation variants (degree-preserving randomization and pain-gene-centric GO reduction), an Identity baseline, and STRING—on the Norman et al. (2019) Perturb-seq dataset (91,205 K562 cells, 5,045 genes, 284 CRISPRi conditions). Gene embeddings were computed via spectral decomposition (k = 128) of the normalized graph Laplacian. Perturbation effects were predicted via ridge regression across 10 independent train/test splits (80%/20%), with paired t-tests, delta-r confidence intervals, cross-split ranking consistency (Kendall's W), and sensitivity analyses for regularization (alpha = 0.001–100.0) and embedding dimension (k = 32–256). An exploratory 2-layer MLP was evaluated on a single split. Total compute time was approximately 12 minutes (CPU: Intel i9-13900K, 64 GB RAM).
+**Materials and Methods:** We benchmarked 11 KG variants—GO Biological Process, RA-PainKG, five dense random graphs (673,899 edges each), two ablation variants (degree-preserving randomization and pain-gene-centric GO reduction), an Identity baseline, and STRING—on the Norman et al. (2019) Perturb-seq dataset (91,205 K562 cells, 5,045 genes, 284 CRISPRi conditions). Gene embeddings were computed via spectral decomposition (k = 128) of the normalized graph Laplacian. Perturbation effects were predicted via ridge regression across 10 independent train/test splits (80%/20%), with paired t-tests, delta-r confidence intervals, cross-split ranking consistency (Kendall's W), and sensitivity analyses for regularization (alpha = 0.001–100.0) and embedding dimension (k = 32–512). An exploratory 2-layer MLP was evaluated on a single split. Total compute time was approximately 12 minutes (CPU: Intel i9-13900K, 64 GB RAM).
 
-**Results:** Dense random graphs consistently achieved the highest prediction accuracy. A representative random graph (Random_R1) achieved Pearson r = 0.667 (all genes) and 0.620 (pain genes), significantly outperforming GO (r = 0.589 and 0.542; delta = +0.077, 95% CI [+0.059, +0.096], p < 0.001) and RA-PainKG (pain r = 0.503; delta = +0.117, 95% CI [+0.083, +0.150], p < 0.001). Five independent random realizations showed low variability (all-genes r mean = 0.653, SD = 0.010). RA-PainKG did not differ significantly from GO (delta = -0.039, 95% CI [-0.085, +0.007], p = 0.084, unadjusted; Bonferroni threshold p < 0.01). Ablation experiments confirmed that edge identity is irrelevant when degree distribution is preserved (p = 0.41–0.83). Cross-split ranking consistency was moderate (Kendall's W = 0.64–0.65). The exploratory MLP showed attenuated KG distinctions relative to the linear model.
+**Results:** Dense random graphs consistently achieved the highest prediction accuracy. A representative random graph (Random_R1) achieved Pearson r = 0.667 (all genes) and 0.620 (pain genes), significantly outperforming GO (r = 0.589 and 0.542; delta = +0.078, 95% CI [+0.059, +0.096], p < 0.001) and RA-PainKG (pain r = 0.503, computed over 44 pain genes overlapping the Norman dataset; delta = +0.117, 95% CI [+0.083, +0.150], p < 0.001). Five independent random realizations showed low variability (all-genes r mean = 0.653, SD = 0.010). RA-PainKG did not differ significantly from GO (delta = -0.039, 95% CI [-0.078, +0.000], p = 0.084, unadjusted; Bonferroni threshold p < 0.01). Ablation experiments confirmed that edge identity is irrelevant when degree distribution is preserved (p = 0.41–0.83). Cross-split ranking consistency was moderate (Kendall's W = 0.64–0.65). The exploratory MLP showed attenuated KG distinctions relative to the linear model.
 
 **Discussion:** Graph density, not domain specificity, drives perturbation prediction accuracy in this setting. Domain KGs serve a diagnostic function by quantifying knowledge gaps (37.5% of core pain genes absent from PPI databases). A preliminary two-point extrapolation suggests approximately 60,000 pain-relevant PPI edges would be needed for domain KG predictive parity. The K562 test system limits pain-specific conclusions; replication in sensory neuron models is needed.
 
@@ -52,7 +52,7 @@ The Norman et al. Perturb-seq dataset (DOI: 10.7910/DVN/R9JDLS) profiles CRISPRi
 
 ### 2.2 Knowledge Graph Variants
 
-We construct gene-gene adjacency matrices for 5,045 Norman genes across 10 KG variants organized into three factor categories:
+We construct gene-gene adjacency matrices for 5,045 Norman genes across 11 KG variants organized into three factor categories:
 
 **A. Density Factor:**
 
@@ -89,7 +89,7 @@ where W (128 x 5045) is learned via ridge regression (lambda = 0.1). This delibe
 
 This design contrasts with the full GEARS architecture [1], which uses GraphSAGE message-passing and cross-gene attention—mechanisms that may differentially exploit KG structure. Our results measure KG embedding quality in a controlled linear setting rather than end-to-end GEARS performance.
 
-**Compute requirements:** Spectral decomposition of each 5,045 x 5,045 adjacency matrix required 40–66 seconds (Intel i7, 32 GB RAM, single core). Data loading (40 seconds), KG construction (GO: 100 seconds; RA-PainKG: 12 seconds), and benchmark execution (10 splits x 10 KGs, <1 second per split-KG combination) brought the total wall-clock time to approximately 12 minutes. Peak memory usage was approximately 2.5 GB during simultaneous matrix operations.
+**Compute requirements:** Spectral decomposition of each 5,045 x 5,045 adjacency matrix required 40–66 seconds (Intel i9-13900K, 64 GB RAM, single core). Data loading (40 seconds), KG construction (GO: 100 seconds; RA-PainKG: 12 seconds), and benchmark execution (10 splits x 11 KGs, <1 second per split-KG combination) brought the total wall-clock time to approximately 12 minutes. Peak memory usage was approximately 2.5 GB during simultaneous matrix operations.
 
 ### 2.4 Evaluation Protocol
 
@@ -141,7 +141,7 @@ Among the 44 pain genes in the Norman vocabulary (26.7% of 165 annotated pain ge
 
 ### 3.3 K562 Expression of Pain Genes
 
-K562 cells express pain-annotated genes at a mean level of 0.032 (log-normalized units) compared to the genome-wide mean of 0.107. 38.6% of pain genes (17/44) have mean expression below 0.01, including key nociception genes SCN11A, TRPV1, and P2RX3. We interpret this as a conservative test scenario: K562 represents a worst-case setting for domain KG evaluation.
+Among 44 pain genes overlapping the Norman K562 dataset, 59.1% (26/44) have mean expression below 0.01 (log-normalized counts), including key nociception genes SCN11A, TRPV1, and P2RX3. Mean pain-gene expression (0.117) is comparable to the genome-wide mean (0.107). We interpret K562 as a worst-case test scenario for domain KG evaluation, with the caveat that most nociception-specific transcriptional programs are inactive in this cell line.
 
 ### 3.4 Perturbation Prediction Benchmark
 
@@ -162,11 +162,11 @@ Values are mean +/- SD across 10 splits. Random values are the mean +/- SD of fi
 
 | Comparison | Delta r | 95% CI | p-value | Significant (nominal) | Significant (Bonferroni) |
 |-----------|---------|--------|---------|----------------------|------------------------|
-| Random_R1 vs RA-PainKG | +0.117 | [+0.081, +0.152] | <0.001 | *** | *** |
-| Random_R1 vs GO | +0.078 | [+0.043, +0.112] | <0.001 | *** | *** |
-| GO-painCentric vs GO | -0.019 | [-0.052, +0.014] | 0.22 | ns | ns |
-| RA-PainKG vs GO | -0.039 | [-0.085, +0.007] | 0.084 | ns | ns |
-| RA-PainKG-degPreserved vs RA-PainKG | -0.020 | [-0.071, +0.032] | 0.39 | ns | ns |
+| Random_R1 vs RA-PainKG | +0.117 | [+0.083, +0.150] | <0.001 | *** | *** |
+| Random_R1 vs GO | +0.078 | [+0.059, +0.096] | <0.001 | *** | *** |
+| GO-painCentric vs GO | -0.019 | [-0.047, +0.010] | 0.22 | ns | ns |
+| RA-PainKG vs GO | -0.039 | [-0.078, +0.000] | 0.084 | ns | ns |
+| RA-PainKG-degPreserved vs RA-PainKG | -0.020 (pain) / -0.005 (all) | [-0.065, +0.025] / [-0.052, +0.041] | 0.41 / 0.83 | ns | ns |
 
 *Shapiro-Wilk tests confirm normality of all paired differences (all W > 0.94, p > 0.05). Bonferroni-adjusted threshold for m = 5 comparisons: alpha = 0.01. All conclusions are identical at nominal and adjusted thresholds.*
 
@@ -176,9 +176,9 @@ Values are mean +/- SD across 10 splits. Random values are the mean +/- SD of fi
 
 ### 3.5 Ablation Analysis
 
-**Density ablation:** Performance tracks edge density monotonically. GO-painCentric (121,543 edges, 18% of GO edges) achieves performance statistically indistinguishable from full GO (delta = -0.019, p = 0.22), demonstrating that the vast majority of GO's predictive value concentrates in edges involving pain-relevant genes.
+**Density ablation:** Performance tracks edge density monotonically. GO-painCentric (121,543 edges, 18% of GO edges) achieves performance statistically indistinguishable from full GO (delta = -0.019, p = 0.22 for pain-genes; delta = +0.014, p = 0.17 for all-genes), demonstrating that the vast majority of GO's predictive value concentrates in edges involving pain-relevant genes.
 
-**Topology ablation:** RA-PainKG-degPreserved achieves statistically indistinguishable performance from RA-PainKG (delta = -0.020, p = 0.39). Edge identity provides no measurable advantage over random connections with matched degree distribution—the binding constraint is edge count, not edge semantics.
+**Topology ablation:** RA-PainKG-degPreserved achieves statistically indistinguishable performance from RA-PainKG (delta = -0.020 for pain-genes, p = 0.41; delta = -0.005 for all-genes, p = 0.83). Edge identity provides no measurable advantage over random connections with matched degree distribution—the binding constraint is edge count, not edge semantics.
 
 **Domain specificity ablation:** The ranking Random > GO > RA-PainKG is invariant across all gene subsets with adequate statistical power (all genes, pain, non-pain, Track Dual). On the 44-gene pain subset, GO nominally outperforms RA-PainKG (0.542 vs 0.503, p = 0.084 ns), though the difference does not reach significance. Track A (n = 3) and Track B (n = 5) subsets are underpowered for meaningful comparison.
 
@@ -240,7 +240,7 @@ Our benchmark framework introduces three standards for KG evaluation:
 
 ### 4.5 Limitations
 
-1. **Cell-type mismatch:** K562 chronic myeloid leukemia cells are fundamentally mismatched to RA pain biology. Pain-relevant genes show low expression (mean expression 0.032 vs genome-wide mean 0.107, units of log-normalized counts; 38.6% of pain genes below 0.01 expression threshold), indicating that key nociceptive transcriptional programs are largely inactive in this cell line. Consequently, the null result for domain KG advantage should not be interpreted as evidence that domain-specific prior knowledge lacks value for pain biology—only that no advantage was detectable in a system where pain genes are minimally expressed. Whether domain KGs improve prediction in disease-relevant models (e.g., iPSC-derived sensory neurons, DRG organoids) remains an open question.
+1. **Cell-type mismatch:** K562 chronic myeloid leukemia cells are fundamentally mismatched to RA pain biology. Among 44 pain genes present in the Norman K562 dataset, 59.1% (26/44) exhibit mean expression below 0.01 (log-normalized counts), and the mean pain-gene expression (0.117) is comparable to the genome-wide mean (0.107), indicating that nociception-specific transcriptional programs are largely inactive or indistinguishable from background in this cell line. Only 44 of 165 RA-PainKG pain genes (26.7%) are measurable in the Norman dataset. Consequently, the null result for domain KG advantage should not be interpreted as evidence that domain-specific prior knowledge lacks value for pain biology—only that no advantage was detectable in a system where most pain genes are either absent or minimally expressed. Whether domain KGs improve prediction in disease-relevant models (e.g., iPSC-derived sensory neurons, DRG organoids) remains an open question.
 
 2. **Linear model scope:** Our ridge regression isolates KG contribution but lacks the attention mechanisms of full GEARS. The single-split MLP comparison suggests nonlinear models may obscure rather than amplify KG differences, but GNN-specific architectures could behave differently. Formal multi-split nonlinear benchmarking is warranted.
 
