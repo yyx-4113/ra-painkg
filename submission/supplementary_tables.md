@@ -7,6 +7,23 @@ Mean Pearson r (+/- SD) across 10 independent train/test splits (80%/20%). Rando
 | Knowledge Graph | PPI Edges | All-Genes r | Pain-Genes r | Non-Pain r | Track A r | Track B r | Track Dual r |
 |---|---|---|---|---|---|---|---|
 | GO | 673,899 | 0.589 +/- 0.051 | 0.542 +/- 0.058 | 0.590 +/- 0.051 | 0.098 +/- 0.114 | 0.436 +/- 0.099 | 0.542 +/- 0.056 |
+# Supplementary Table S6: KG Variant Structural Characteristics
+
+| KG Variant | Edges | Density | Mean Degree | Coverage (%) |
+|-----------|-------|---------|-------------|-------------|
+| GO-BP | 673,899 | 0.02648 | 267.1 | 100 |
+| Random (5 graphs; range) | 673,899 | 0.02648 | 267.1 | 100 |
+| GO-painCentric | 121,543 | 0.00478 | 48.2 | 100 |
+| RA-PainKG | 2,400 | 0.00009 | 1.0 | 31.7 |
+| RA-PainKG-degPreserved | 2,400 | 0.00009 | 1.0 | 31.7 |
+| STRING (gene-symbol filtered) | 15,403 | 0.00061 | 6.1 | 100 |
+| Identity | 0 | 0 | 0 | 0 |
+
+RA-PainKG is 280-fold sparser than GO (2,400 vs 673,899 edges), with 68.3% of genes having zero edges.
+
+---
+
+
 | RA_PainKG | 2,400 | 0.551 +/- 0.057 | 0.503 +/- 0.055 | 0.552 +/- 0.057 | 0.097 +/- 0.143 | 0.451 +/- 0.075 | 0.503 +/- 0.059 |
 | RA_PainKG_degPreserved | 2,400 | 0.546 +/- 0.049 | 0.483 +/- 0.057 | 0.547 +/- 0.049 | 0.069 +/- 0.084 | 0.460 +/- 0.088 | 0.487 +/- 0.058 |
 | GO_painCentric | 121,543 | 0.603 +/- 0.054 | 0.523 +/- 0.065 | 0.604 +/- 0.054 | 0.055 +/- 0.085 | 0.555 +/- 0.183 | 0.518 +/- 0.063 |

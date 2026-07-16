@@ -16,15 +16,15 @@
 
 ## Abstract
 
-**Objective:** To establish rigorous methodology for benchmarking knowledge graph (KG) contributions to gene perturbation prediction, using a rheumatoid arthritis (RA) pain signaling KG as a worked example of domain-specific prior knowledge.
+**Objective:** To establish rigorous methodology for benchmarking knowledge graph (KG) contributions to gene perturbation prediction, and to determine whether domain-specific edge semantics improve prediction beyond graph connectivity alone.
 
-**Materials and Methods:** We benchmarked 11 KG variants—GO Biological Process, RA-PainKG, five dense random graphs (673,899 edges each), two ablation variants (degree-preserving randomization and pain-gene-centric GO reduction), an Identity baseline, and STRING—on the Norman et al. (2019) Perturb-seq dataset (91,205 K562 cells, 5,045 genes, 284 CRISPRi conditions). Gene embeddings were computed via spectral decomposition (k = 128) of the normalized graph Laplacian. Perturbation effects were predicted via ridge regression across 10 independent train/test splits (80%/20%), with paired t-tests, delta-r confidence intervals, cross-split ranking consistency (Kendall's W), and sensitivity analyses for regularization (alpha = 0.001–100.0) and embedding dimension (k = 32–512). An exploratory 2-layer MLP was evaluated on a single split. Total compute time was approximately 12 minutes (CPU: Intel i9-13900K, 64 GB RAM).
+**Materials and Methods:** We benchmarked 11 KG variants—GO Biological Process, RA-PainKG, five dense random graphs (673,899 edges each), two ablation variants (degree-preserving randomization and pain-gene-centric GO reduction), an Identity baseline, and STRING—on the Norman et al. (2019) Perturb-seq dataset (91,205 K562 cells, 5,045 genes). Gene embeddings were computed via spectral decomposition (k = 128). Perturbation effects were predicted via ridge regression across 10 independent splits (80%/20%), with paired t-tests, delta-r confidence intervals, and sensitivity analyses (alpha = 0.001–100.0, k = 32–512).
 
-**Results:** Dense random graphs consistently achieved the highest prediction accuracy. A representative random graph (Random_R1) achieved Pearson r = 0.667 (all genes) and 0.620 (pain genes), significantly outperforming GO (r = 0.589 and 0.542; delta = +0.078, 95% CI [+0.059, +0.096], p < 0.001) and RA-PainKG (pain r = 0.503, computed over 44 pain genes overlapping the Norman dataset; delta = +0.117, 95% CI [+0.083, +0.150], p < 0.001). Five independent random realizations showed low variability (all-genes r mean = 0.653, SD = 0.010). RA-PainKG did not differ significantly from GO (delta = -0.039, 95% CI [-0.078, +0.000], p = 0.084, unadjusted; Bonferroni threshold p < 0.01). Ablation experiments confirmed that edge identity is irrelevant when degree distribution is preserved (p = 0.41–0.83). Cross-split ranking consistency was moderate (Kendall's W = 0.64–0.65). The exploratory MLP showed attenuated KG distinctions relative to the linear model.
+**Results:** Dense random graphs consistently achieved highest accuracy. A representative random graph (Random_R1) achieved Pearson r = 0.667 (all genes) and 0.620 (pain genes, n = 44 overlapping), significantly outperforming GO (r = 0.589, 0.542; delta = +0.078, p < 0.001) and RA-PainKG (pain r = 0.503; delta = +0.117, p < 0.001). RA-PainKG did not differ from GO (delta = −0.039, 95% CI [−0.078, +0.000], p = 0.084). Degree-preserving randomization left performance unchanged (p = 0.41–0.83), providing causal evidence that graph connectivity, not edge semantics, drives prediction. Cross-split consistency was moderate (Kendall's W = 0.64–0.65).
 
-**Discussion:** The dominant methodological finding is that single-split evaluation produces artifacts in KG benchmarking: RA-PainKG appeared to outperform GO in one split (pain r = 0.558 vs 0.481) but reversed under multi-split averaging (0.503 vs 0.542). Ablation experiments provide causal evidence that edge identity is irrelevant when degree distribution is preserved. The K562 system severely limits pain-specific conclusions (59.1% of measurable pain genes below expression threshold; only 26.7% of RA-PainKG genes present in the dataset); replication in sensory neuron models is essential.
+**Discussion:** Single-split evaluation produces artifacts: RA-PainKG appeared to outperform GO in one split (r = 0.558 vs 0.481) but reversed under multi-split averaging (0.503 vs 0.542). The K562 system limits pain-specific conclusions (59.1% of measurable pain genes below expression threshold).
 
-**Conclusion:** We provide an open-source multi-split ablation benchmark framework and demonstrate that single-split KG evaluation generates misleading conclusions. Causal evidence from degree-preserving randomization shows that graph connectivity, not edge semantics, drives linear perturbation prediction. Domain KGs quantify knowledge gaps but require disease-relevant test systems for valid evaluation.
+**Conclusion:** We provide an open-source multi-split ablation framework demonstrating that single-split KG evaluation generates misleading conclusions. Graph connectivity, not domain-specific edge semantics, drives linear perturbation prediction.
 
 **Availability:** Code and data at https://github.com/yyx-4113/ra-painkg (MIT license).
 
@@ -114,7 +114,7 @@ Perturbation conditions (n = 283, excluding ctrl) are split into train (80%, app
 Statistical comparisons:
 - **Paired t-tests** across 10 splits, validated by Shapiro-Wilk normality tests
 - **Delta-r 95% confidence intervals** via t-distribution
-- **Bonferroni correction** for multiple comparisons: with m = 5 primary tests in Table 3, the adjusted significance threshold is alpha = 0.05/5 = 0.01. All conclusions reported at both nominal and adjusted thresholds.
+- **Bonferroni correction** for multiple comparisons: with m = 5 primary tests in Table 2, the adjusted significance threshold is alpha = 0.05/5 = 0.01. All conclusions reported at both nominal and adjusted thresholds.
 - **Cross-split ranking consistency** via Kendall's W coefficient
 - **Effect sizes** reported as Cohen's d
 
@@ -134,19 +134,7 @@ Python 3.10+, ScanPy 1.12, NetworkX 3.6, NumPy, SciPy, scikit-learn. Full pipeli
 
 ### 3.1 KG Structural Properties
 
-**Table 1. KG variant structural characteristics**
-
-| KG Variant | Edges | Density | Mean Degree | Coverage (%) |
-|-----------|-------|---------|-------------|-------------|
-| GO-BP | 673,899 | 0.02648 | 267.1 | 100 |
-| Random (5 graphs; range) | 673,899 | 0.02648 | 267.1 | 100 |
-| GO-painCentric | 121,543 | 0.00478 | 48.2 | 100 |
-| RA-PainKG | 2,400 | 0.00009 | 1.0 | 31.7 |
-| RA-PainKG-degPreserved | 2,400 | 0.00009 | 1.0 | 31.7 |
-| Identity | 0 | 0 | 0 | 0 |
-| STRING (gene-symbol filtered) | 15,403 | 0.00061 | 6.1 | 100 |
-
-RA-PainKG is 280-fold sparser than GO, with 68.3% of genes having zero edges.
+RA-PainKG is 280-fold sparser than GO (2,400 vs 673,899 edges), with 68.3% of genes having zero edges. Complete structural characteristics for all 11 KG variants are provided in Supplementary Table S6.
 
 ### 3.2 Pain Gene Connectivity Asymmetry
 
@@ -158,7 +146,7 @@ Among 44 pain genes overlapping the Norman K562 dataset, 59.1% (26/44) have mean
 
 ### 3.4 Perturbation Prediction Benchmark
 
-**Table 2. Multi-split benchmark results (mean +/- SD across 10 splits)**
+**Table 1. Multi-split benchmark results (mean +/- SD across 10 splits)**
 
 | KG Variant | All Genes r | Pain Genes r | Non-pain r | Track A r | Track B r | Track Dual r |
 |-----------|------------|-------------|-----------|----------|----------|-------------|
@@ -170,9 +158,9 @@ Among 44 pain genes overlapping the Norman K562 dataset, 59.1% (26/44) have mean
 | Identity | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 |
 | STRING (gene-symbol filtered) | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 |
 
-Values are mean +/- SD across 10 splits. Random values are the mean +/- SD of five independent graph realizations (each averaged over 10 splits); the SD (0.010–0.015) reflects inter-realization variability. Individual realizations range from r = 0.641 to 0.667 (all genes). GO-painCentric nominally exceeds GO on all-genes r but the difference is not significant (see Table 3). Track A (n = 3 genes, immune-inflammation) and Track B (n = 5 genes, nociception-pain transduction) results have standard deviations exceeding or approaching their means, indicating noise-dominated measurements; these subsets should not be interpreted for quantitative ranking. The Identity (no-edge) and STRING KGs both produced r = 0.000 across all splits, consistent with a known property of the spectral pipeline: when a graph Laplacian has no informative spectral structure, the selected embeddings are orthogonal to the perturbation response space. The STRING result (r = 0.000 despite 15,403 edges) does not contradict the density hypothesis because STRING edges were filtered to gene-symbol-level precision at the 5,045-gene scale, which degrades the spectral structure relative to the intentionally dense Random graphs; this filtering was necessary for identifier compatibility but likely removed most of STRING's topological information. The representative dense graph Random_R1 (all-genes r = 0.667, pain r = 0.620) is used for paired comparisons in Table 3.
+Values are mean +/- SD across 10 splits. Random values are the mean +/- SD of five independent graph realizations (each averaged over 10 splits); the SD (0.010–0.015) reflects inter-realization variability. Individual realizations range from r = 0.641 to 0.667 (all genes). GO-painCentric nominally exceeds GO on all-genes r but the difference is not significant (see Table 2). Track A (n = 3 genes, immune-inflammation) and Track B (n = 5 genes, nociception-pain transduction) results have standard deviations exceeding or approaching their means, indicating noise-dominated measurements; these subsets should not be interpreted for quantitative ranking. The Identity (no-edge) and STRING KGs both produced r = 0.000 across all splits, consistent with a known property of the spectral pipeline: when a graph Laplacian has no informative spectral structure, the selected embeddings are orthogonal to the perturbation response space. The STRING result (r = 0.000 despite 15,403 edges) does not contradict the density hypothesis because STRING edges were filtered to gene-symbol-level precision at the 5,045-gene scale, which degrades the spectral structure relative to the intentionally dense Random graphs; this filtering was necessary for identifier compatibility but likely removed most of STRING's topological information. The representative dense graph Random_R1 (all-genes r = 0.667, pain r = 0.620) is used for paired comparisons in Table 2.
 
-**Table 3. Paired comparisons with delta-r 95% confidence intervals (pain genes)**
+**Table 2. Paired comparisons with delta-r 95% confidence intervals (pain genes)**
 
 | Comparison | Delta r | 95% CI | p-value | Significant (nominal) | Significant (Bonferroni) |
 |-----------|---------|--------|---------|----------------------|------------------------|
