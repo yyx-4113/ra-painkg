@@ -26,3 +26,7 @@ __pycache__/
 
 # Backup files
 *.bak*
+# Large raw data files (excluded from Git)
+data/prime_kg.csv
+data/primekg_dataset.zip
+data/primekg/
