@@ -274,7 +274,7 @@ This study uses exclusively publicly available data (Norman et al., 2019; DOI: 1
 
 ## Data and Code Availability
 
-All code, processed KG adjacency matrices, and benchmark results are available at https://github.com/yyx-4113/ra-painkg under the MIT license. The Norman et al. Perturb-seq dataset is available from Harvard Dataverse (DOI: 10.7910/DVN/R9JDLS). Gene Ontology annotations are from the Gene Ontology Consortium (2024 release). RA-PainKG graph files are included in the repository. Benchmark result tables are provided as Supplementary Tables S1-S5.
+All code, processed KG adjacency matrices, and benchmark results are available at https://github.com/yyx-4113/ra-painkg under the MIT license. The Norman et al. Perturb-seq dataset is available from Harvard Dataverse (DOI: 10.7910/DVN/R9JDLS). Gene Ontology annotations are from the Gene Ontology Consortium (2024 release). RA-PainKG graph files are included in the repository. Benchmark result tables are provided as Supplementary Tables S1-S5 (included in this repository at benchmark/results/supplementary_table_S*.md).
 
 ---
 
@@ -286,7 +286,7 @@ All code, processed KG adjacency matrices, and benchmark results are available a
 
 [3] Safiri S, Kolahi AA, Hoy D, et al. Global, regional and national burden of rheumatoid arthritis 1990-2017. Annals of the Rheumatic Diseases. 2019;78(11):1463-1471.
 
-[4] RA-PainKG: A tissue-specific knowledge graph for rheumatoid arthritis pain signaling. Companion Data Descriptor. [In preparation].
+[4] Yang Y. RA-PainKG: A tissue-specific knowledge graph for rheumatoid arthritis pain signaling — construction protocol, network analysis, and coverage-gap documentation. Zenodo/GitHub. 2026. Available at: https://github.com/yyx-4113/ra-painkg.
 
 [5] Norman TM, Horlbeck MA, Replogle JM, et al. Exploring genetic interaction manifolds constructed from rich single-cell phenotypes. Science. 2019;365(6455):786-793.
 
