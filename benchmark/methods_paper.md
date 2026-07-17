@@ -28,19 +28,19 @@
 
 **Keywords:** knowledge graph; rheumatoid arthritis; pain signaling; PrimeKG; GTEx; coverage-gap analysis; tissue-specific; database resource
 
-**Keywords:** knowledge graphs; perturbation prediction; benchmark methodology; ablation study; multi-split validation; rheumatoid arthritis
-
 ---
 
 ## 1. Introduction
 
-Predicting transcriptional responses to genetic perturbations is central to functional genomics, with translational applications in drug target identification, synthetic lethal screening, and disease mechanism elucidation. The GEARS model demonstrated that incorporating Gene Ontology (GO) graphs as prior knowledge significantly improves perturbation prediction via graph neural networks [1].
+Rheumatoid arthritis (RA) affects approximately 1% of the global population, causing chronic synovial inflammation that leads to joint destruction and persistent pain [1,2]. Disease-modifying antirheumatic drugs and biologic agents effectively control inflammation in many patients, yet a substantial proportion continue to experience clinically significant pain [3,4]. This dissociation between anti-inflammatory efficacy and analgesia reveals a specific knowledge gap: pain signaling pathways in RA are not adequately captured by existing biological network resources.
 
-However, GO is a general-purpose ontology that does not capture tissue-specific signaling, disease-relevant pathway organization, or drug-target interactions [2]. Recent work has explored alternatives for perturbation prediction, including single-cell foundation models (scGPT, Geneformer, scFoundation) [11–13] and graph neural network architectures with attention over KG structure. However, systematic benchmarking of domain-specific versus general-purpose prior knowledge remains absent, motivating our controlled ablation design. RA serves as a motivating example: despite effective anti-inflammatory therapies, a substantial proportion of patients continue to experience clinically significant pain, suggesting that analgesic targets may be distinct from inflammatory targets and that domain-specific prior knowledge could, in principle, aid their identification [3]. However, whether computational benchmarks can reliably detect such advantages—or whether standard evaluation practices produce artifacts that obscure real differences—remains an open methodological question that motivates our controlled ablation design.
+The molecular basis of RA pain operates across multiple anatomical compartments. Peripheral nociceptors express transduction channels (TRPV1, TRPA1, Nav1.7/SCN9A) that initiate pain signals [5,6]. Spinal dorsal horn circuits process these signals through neuropeptide and neurotrophin mediators (CGRP, Substance P, BDNF-TrkB) [7]. Descending modulatory pathways (opioid, GABAergic, serotonergic) regulate pain transmission from supraspinal centers. These mechanisms operate in distinct tissue contexts that generic interaction networks cannot distinguish.
 
-We selected RA-PainKG as a worked example of a domain-specific KG [4]. It was constructed in three stages: (1) 192 core pain genes were manually curated from nine literature-defined pain signaling pathways; (2) 120 matched PrimeKG v1.0 by exact symbol and 2-hop expansion identified 45 additional genes, yielding 165 annotated genes organized into Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes, 96 overlapping); (3) all PrimeKG edges involving these genes were retained, producing 18,069 nodes and 127,226 edges (2,400 PPI, 124,826 non-PPI). A coverage-gap analysis identified 72 core pain genes (37.5%) absent from PrimeKG. Critically, only 44 of the 165 pain genes (26.7%) overlap with the Norman K562 Perturb-seq gene vocabulary, constraining the pain-specific conclusions that can be drawn from this benchmark.
+Existing biological network resources have critical limitations for pain mechanism research. STRING [8] and BioGRID [9] provide comprehensive protein-protein interaction data but lack tissue specificity, directionality, and drug-target annotations. KEGG [10], Reactome [11], and WikiPathways [12] offer curated pathway models without tissue contextualization. PrimeKG [13] integrates 20 biomedical resources into a unified multimodal knowledge graph, representing a major advance over single-source networks. However, PrimeKG remains a general-purpose resource: it does not distinguish pain-specific signaling from general inflammatory pathways, lacks tissue expression filtering, and provides no systematic documentation of coverage gaps. Pain-focused resources such as the IUPHAR/BPS Guide to Pharmacology [14] and the Human Pain Genetics Database [15] curate pain-relevant genes but lack network connectivity and multi-entity integration.
 
-The central biomedical informatics question is: **does domain specificity improve prediction, or is graph connectivity sufficient regardless of edge semantics?** To answer this, we designed a comprehensive ablation benchmark isolating three factors: graph density, domain specificity, and structural topology. We hypothesize that the density-dominant mechanism we identify may generalize to any disease where domain KGs are substantially sparser than GO—which describes most rare and understudied conditions.
+The consequence is a fragmented resource landscape. Researchers must either use general-purpose knowledge graphs that lack pain-specific organization, or pain-specific gene lists that lack network structure. A resource that integrates curated pain gene annotations with multimodal biomedical network data, provides tissue-contextual filtering, and systematically documents knowledge gaps would fill a specific and well-defined need.
+
+We present RA-PainKG, a tissue-contextualized dual-track knowledge graph constructed by integrating PrimeKG v1.0 [13] with GTEx v8 tissue expression data [16] and manual curation of nine core pain signaling pathways. The resource contains 18,069 nodes across 10 entity types and 127,226 directed edges across 24 relation types. Starting from 192 manually curated pain genes, 120 (62.5%) matched PrimeKG by exact symbol; 2-hop neighborhood expansion identified 45 additional pain-relevant genes, yielding 165 annotated genes organized into Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes, with 96 overlapping). A systematic coverage-gap analysis documents 72 core pain genes (37.5%) absent from PrimeKG. Transparent benchmark validation using the Norman K562 Perturb-seq dataset [20] establishes honest boundary conditions. All graph files, source code, and documentation are publicly available under the MIT license at https://github.com/yyx-4113/ra-painkg [19].
 
 
 **Significance Statement**
@@ -52,23 +52,20 @@ The central biomedical informatics question is: **does domain specificity improv
 *What this Paper Adds:* RA-PainKG, a tissue-contextualized dual-track knowledge graph integrating PrimeKG with GTEx v8 expression data and manual curation of nine pain signaling pathways. The resource includes systematic coverage-gap documentation identifying 72 core pain genes (37.5%) absent from existing biomedical knowledge graphs. All nine curated pain pathways are mapped (57-100% gene coverage), and 4,760 drug-target edges enable direct pharmacological queries.
 
 *Who Benefits:* Pain biology researchers requiring structured, tissue-aware knowledge representations; bioinformaticians developing machine learning models with domain-specific prior knowledge; and knowledge graph curators seeking a reproducible construction framework with transparent knowledge-gap documentation.
----
 
 ## 2. Materials and Methods
 
 ### 2.1 Knowledge Graph Construction
 
-RA-PainKG was constructed in three stages (detailed protocol in [4]).
-
-### 2.4 Perturbation Data and Benchmark Validation
-
-The Norman et al. Perturb-seq dataset (DOI: 10.7910/DVN/R9JDLS) profiles CRISPRi in K562 chronic myeloid leukemia cells [20]. The processed dataset (perturb_processed.h5ad, 2.2 GB; Harvard Dataverse datafile 6154020) contains 5,045 genes across 91,205 cells with 284 perturbation conditions (single-gene and combinatorial). We aggregate cells by perturbation condition to compute mean post-perturbation expression changes (delta = condition_mean - ctrl_mean). Control expression variance across genes is 0.194 (SD = 0.441), computed from log-normalized expression values.
+RA-PainKG was constructed in three stages (detailed protocol in [19]).
 
 ### 2.2 RA-PainKG Construction Pipeline
 
-**Stage 1: Core gene curation.** 192 pain genes were manually curated from nine literature-defined pain signaling pathways: TRP channels, voltage-gated sodium channels, neurotrophin signaling, opioid signaling, MAPK pathway, JAK-STAT pathway, prostaglandin pathway, complement cascade, GABA/glycine receptors, serotonin receptors, endocannabinoid system, kinase signaling, transcription factors, RA-specific genes, and anesthetic targets. Inclusion criteria: (1) published evidence for pain signaling or RA inflammation in at least two independent studies, or (2) designation as a known drug target for analgesia or RA treatment.
+**Stage 1: Core gene curation.** 192 pain genes were manually curated from 15 literature-defined functional categories, organized into receptor/ion channel families (TRP channels, voltage-gated sodium channels, serotonin receptors, GABA/glycine receptors, opioid receptors, endocannabinoid system), intracellular signaling cascades (MAPK pathway, JAK-STAT pathway, kinase signaling, transcription factors), and disease/tissue-specific groups (prostaglandin pathway, complement cascade, neurotrophin signaling, RA-specific genes, anesthetic targets). Inclusion criteria: (1) published experimental evidence for a role in pain signaling, nociception, or RA inflammation in at least two independent studies (PubMed search: "gene_symbol AND (pain OR nociception OR rheumatoid arthritis)"), or (2) designation as a known drug target for analgesia or RA treatment in the IUPHAR/BPS Guide to Pharmacology [14] or DrugBank. The full gene list with functional category assignments and supporting PMIDs is provided in Supplementary Table S1. TRP channels, voltage-gated sodium channels, neurotrophin signaling, opioid signaling, MAPK pathway, JAK-STAT pathway, prostaglandin pathway, complement cascade, GABA/glycine receptors, serotonin receptors, endocannabinoid system, kinase signaling, transcription factors, RA-specific genes, and anesthetic targets. Inclusion criteria: (1) published evidence for pain signaling or RA inflammation in at least two independent studies, or (2) designation as a known drug target for analgesia or RA treatment.
 
 **Stage 2: PrimeKG integration.** Of 192 core pain genes, 120 (62.5%) matched PrimeKG v1.0 by exact gene symbol. Starting from these seed nodes, we performed 2-hop neighborhood expansion with a connectivity filter (nodes must be reachable from at least two seed categories). This identified 45 additional pain-relevant genes (e.g., CCR6, CSF2, IRF5, IFNG, FCGR3A), yielding a final annotated set of 165 genes organized into Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes, with 96 overlapping).
+
+**Tissue-contextual filtering with GTEx v8.** GTEx v8 median tissue expression data [16] were used to annotate each pain gene with tissue-specific expression levels across 54 human tissues. For nociception-relevant compartments, we used spinal cord (cervical C1), tibial nerve, whole blood, and spleen as proxies. A gene was classified as tissue-expressed if median TPM >= 1.0 in the relevant tissue. This information is provided as node attributes in the GraphML and CSV formats but was not used to filter edges in the current release, as removing edges based on bulk tissue expression risks discarding valid low-expression interactions. Future versions will incorporate single-cell expression data for finer tissue-contextual filtering.
 
 **Stage 3: Edge integration.** All PrimeKG edges involving the 165 annotated genes were retained: 2,400 protein-protein interaction edges and 124,826 non-PPI edges (pathway, bioprocess, drug-target across 24 relation types). Graph statistics: 18,069 nodes (10 entity types), 127,226 directed edges. Only 44 of the 165 annotated genes (26.7%) overlap with the Norman K562 Perturb-seq gene vocabulary (Supplementary Table S6).
 
@@ -101,6 +98,10 @@ RA-PainKG gene nodes (type "gene/protein") are extracted from RA_PainKG_final.gr
 
 **STRING note:** STRING PPI (v12) was included in the benchmark as the 11th variant but yielded zero predictive signal (r = 0.000 on all subsets), consistent with Identity (no-edge) performance. We attribute this null result to ENSP-to-gene-symbol mapping at the 5,045-gene scale, which introduces identifier ambiguity that degrades the spectral structure relative to the intentionally dense Random graphs. The 11 variants tested span the full density-accuracy design space, with Random graphs and GO serving as dense baselines and the ablation variants (degPreserved, painCentric) testing domain specificity.
 
+### 2.4 Perturbation Data and Benchmark Validation
+
+The Norman et al. Perturb-seq dataset (DOI: 10.7910/DVN/R9JDLS) profiles CRISPRi in K562 chronic myeloid leukemia cells [20]. The processed dataset (perturb_processed.h5ad, 2.2 GB; Harvard Dataverse datafile 6154020) contains 5,045 genes across 91,205 cells with 284 perturbation conditions (single-gene and combinatorial). We aggregate cells by perturbation condition to compute mean post-perturbation expression changes (delta = condition_mean - ctrl_mean). Control expression variance across genes is 0.194 (SD = 0.441), computed from log-normalized expression values.
+
 ### 2.5 Gene Embedding and Prediction Model
 
 For each KG, we compute 128-dimensional gene embeddings via spectral decomposition of the normalized graph Laplacian: L = I - D^{-1/2} A D^{-1/2}, extracting eigenvectors corresponding to the k smallest non-zero eigenvalues. For graphs with isolated nodes (RA-PainKG: 68.3% of genes), these nodes receive near-zero embeddings that contribute no predictive signal in the linear model—a feature that accurately reflects their lack of KG-derived prior information. The perturbation prediction model is:
@@ -126,7 +127,7 @@ Perturbation conditions (n = 283, excluding ctrl) are split into train (80%, app
 Statistical comparisons:
 - **Paired t-tests** across 10 splits, validated by Shapiro-Wilk normality tests
 - **Delta-r 95% confidence intervals** via t-distribution
-- **Bonferroni correction** for multiple comparisons: with m = 5 primary tests in Table 3, the adjusted significance threshold is alpha = 0.05/5 = 0.01. All conclusions reported at both nominal and adjusted thresholds.
+- **Bonferroni correction** for multiple comparisons: with m = 5 primary tests (Supplementary Table S5), the adjusted significance threshold is alpha = 0.05/5 = 0.01. All conclusions reported at both nominal and adjusted thresholds.
 - **Cross-split ranking consistency** via Kendall's W coefficient
 - **Effect sizes** reported as Cohen's d
 
@@ -150,11 +151,11 @@ RA-PainKG is publicly available in three formats: GraphML (network visualization
 
 The graph spans 10 entity types (gene/protein, drug, disease, pathway, biological process, molecular function, cellular component, anatomy, phenotype, effect/phenotype) and 24 relation types, with drug-target edges (4,760 edges) enabling direct pharmacological queries. Network topology analysis identified EGR1, FOS, STAT3, JUN, and AKT1 as the top five hub nodes by betweenness centrality (Figure 1). The degree distribution follows a scale-free pattern characteristic of biological networks (Figure 2).
 
-All nine literature-curated pain signaling pathways were successfully mapped onto RA-PainKG with gene coverage ranging from 57% (complement cascade) to 100% (TRP channels, voltage-gated sodium channels, neurotrophin signaling). The dual-track organization is summarized in Table S1: Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes), with 96 genes (58.2%) spanning both tracks. This overlap is biologically expected given the mechanistic interconnection between inflammation and pain sensitization, and the dual-track framework is provided as a conceptual organization scheme for hypothesis generation.
+All nine literature-curated pain signaling pathways were successfully mapped onto RA-PainKG with gene coverage ranging from 57% (complement cascade) to 100% (TRP channels, voltage-gated sodium channels, neurotrophin signaling). The dual-track organization is summarized in Table S1: Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes), with 96 genes (58.2%) spanning both tracks. This overlap is biologically expected given the mechanistic interconnection between inflammation and pain sensitization, The substantial Track A/B overlap (58.2%) is biologically expected: transcription factors (FOS, JUN, STAT3) activated by inflammatory cytokines also drive nociceptive sensitization, MAP kinases transduce both inflammatory and pain signals, and prostaglandins (via COX-2/PTGS2) bridge immune activation and nociceptor sensitization [5,7]. Rather than indicating poor track separation, this overlap reflects the mechanistic reality that inflammation and pain are deeply coupled in RA. The dual-track framework should be used as a conceptual lens for hypothesis generation-for example, genes exclusive to Track A or B may represent intervention points where anti-inflammatory and analgesic effects can be partially decoupled, while dual-track hub genes represent convergence points where both processes are jointly regulated.
 
 ### 3.2 Coverage-Gap Analysis
 
-Of 192 core pain genes manually curated from the literature, 120 (62.5%) are represented in PrimeKG v1.0 by exact gene symbol matching. The remaining 72 genes (37.5%) constitute systematic coverage gaps in PrimeKG, concentrated in three functional categories: (1) complement cascade components (C1QA, C1QB, C1QC, C2, C3, C4A, C4B, CFB, CFD), where the complement system is increasingly recognized as a pain modulator but is poorly annotated in general-purpose biomedical KGs; (2) anesthetic drug targets (GABRA2, GABRA3, GABRB1, GABRG1, GABRG2, GLRB, GLRA1), where GABA/glycine receptor subunit diversity is not fully captured by PrimeKG's drug-target mappings; and (3) nociceptor-specific ion channels (TRPM8, ASIC3, P2RX7), where gene symbol inconsistencies between resources create mapping failures.
+Of 192 core pain genes manually curated from the literature, 120 (62.5%) are represented in PrimeKG v1.0 by exact gene symbol matching. The remaining 72 genes (37.5%) constitute systematic coverage gaps in PrimeKG, concentrated in three functional categories: (1) complement cascade components (C1QA, C1QB, C1QC, C2, C3, C4A, C4B, CFB, CFD), where the complement system is increasingly recognized as a pain modulator but is poorly annotated in general-purpose biomedical KGs; (2) anesthetic drug targets (GABRA2, GABRA3, GABRB1, GABRG1, GABRG2, GLRB, GLRA1), where GABA/glycine receptor subunit diversity is not fully captured by PrimeKG's drug-target mappings; and (3) nociceptor-specific ion channels (TRPM8, ASIC3, P2RX7), where gene symbol inconsistencies between resources create mapping failures. The low match rate for complement components (35.7%) is particularly consequential: the complement system is increasingly recognized as a pain modulator through C5a-C5aR1 signaling in sensory neurons [17], and C5 polymorphisms are associated with RA susceptibility. This coverage gap means that complement-mediated pain mechanisms are essentially invisible to PrimeKG-based queries and represents a high-priority target for future KG integration.
 
 Additionally, within the 120 genes that do match PrimeKG, 50% of Track B (nociception-specific) genes are isolated in the PPI subgraph (zero protein-protein interaction edges), compared to only 20% of Track A (inflammation) genes. This asymmetry means that nociception-specific prior knowledge is systematically underrepresented even when genes are nominally present in PrimeKG.
 
@@ -181,73 +182,82 @@ Additionally, within the 120 genes that do match PrimeKG, 50% of Track B (nocice
 
 ### 3.3 Benchmark Validation
 
-#### 3.3.1 KG Structural Characteristics in Benchmark Context
+To establish transparent performance characteristics, we validated RA-PainKG in a perturbation prediction benchmark using the Norman K562 Perturb-seq dataset [20] (91,205 cells, 5,045 genes, 284 CRISPRi conditions). Gene embeddings were computed via spectral decomposition (k = 128) of the normalized graph Laplacian, and perturbation effects were predicted via ridge regression across 10 independent train/test splits (80%/20%). Full methods, results for all 11 KG variants, and sensitivity analyses are provided in Supplementary Tables S1-S6.
 
-RA-PainKG is 280-fold sparser than GO (2,400 vs 673,899 edges), with 68.3% of genes having zero edges. Complete structural characteristics for all 11 KG variants are provided in Supplementary Table S6.
+Two findings are directly relevant to the resource. First, RA-PainKG is 280-fold sparser than GO (2,400 vs 673,899 PPI edges), with 68.3% of Norman genes having zero edges. Among the 44 pain genes present in the Norman dataset (26.7% of 165 annotated genes), 59.1% (26/44) exhibit mean expression below 0.01 in K562 cells, and mean pain-gene expression (0.117) is comparable to the genome-wide background (0.107). These data establish a clear boundary condition: K562 perturbation prediction performance reflects test system limitations, not resource quality (see Discussion 4.3).
 
-#### 3.3.2 Pain Gene Connectivity Asymmetry
+Second, the benchmark reveals a methodological consideration for KG evaluation: single-split evaluation produces artifacts. Under one split (seed 42), RA-PainKG appeared to outperform GO on pain genes (r = 0.558 vs 0.481), but the effect reversed under multi-split averaging (0.503 vs 0.542, Supplementary Table S5). This demonstrates the necessity of multi-split statistics for reliable KG evaluation.
 
-Among the 44 pain genes in the Norman vocabulary (26.7% of 165 annotated pain genes), Track B (nociception-specific) genes show 3.3-fold lower mean connectivity than Track A (inflammation-specific) genes. Of the five Track B-only genes present in the Norman dataset, three (60%) are completely isolated in RA-PainKG's PPI subgraph.
+Complete benchmark results for all 11 KG variants, paired statistical comparisons, sensitivity analyses (alpha = 0.001-100.0, k = 32-512), Kendall's W ranking consistency (0.64-0.65), and ablation analyses are documented in Supplementary Tables S1-S6.
 
-#### 3.3.3 K562 Expression Context of Pain Genes
 
-Among 44 pain genes overlapping the Norman K562 dataset, 59.1% (26/44) have mean expression below 0.01 (log-normalized counts), including key nociception genes SCN11A, TRPV1, and P2RX3. Mean pain-gene expression (0.117) is comparable to the genome-wide mean (0.107). We interpret K562 as a worst-case test scenario for domain KG evaluation, with the caveat that most nociception-specific transcriptional programs are inactive in this cell line.
+## 4. Usage Examples
 
-#### 3.3.4 Perturbation Prediction Performance Benchmark
+RA-PainKG is designed for programmatic access via Python (NetworkX). Below are three representative use cases. All code is available in the GitHub repository.
 
-**Table 2. Multi-split benchmark results (mean +/- SD across 10 splits)**
+### 4.1 Querying Drug-Target Relationships
 
-| KG Variant | All Genes r | Pain Genes r | Non-pain r | Track A r | Track B r | Track Dual r |
-|-----------|------------|-------------|-----------|----------|----------|-------------|
-| Random (5x mean) | 0.653 +/- 0.010 | 0.591 +/- 0.015 | 0.653 +/- 0.010 | 0.080 +/- 0.019 | 0.552 +/- 0.019 | 0.592 +/- 0.015 |
-| GO-painCentric | 0.604 +/- 0.054 | 0.523 +/- 0.065 | 0.604 +/- 0.054 | 0.055 +/- 0.085 | 0.555 +/- 0.183 | 0.518 +/- 0.063 |
-| GO-BP | 0.589 +/- 0.048 | 0.542 +/- 0.055 | 0.590 +/- 0.048 | 0.098 +/- 0.114 | 0.436 +/- 0.099 | 0.542 +/- 0.056 |
-| RA-PainKG | 0.551 +/- 0.054 | 0.503 +/- 0.053 | 0.552 +/- 0.054 | 0.097 +/- 0.143 | 0.451 +/- 0.075 | 0.503 +/- 0.060 |
-| RA-PainKG-degPreserved | 0.546 +/- 0.049 | 0.483 +/- 0.057 | 0.546 +/- 0.049 | 0.069 +/- 0.084 | 0.460 +/- 0.088 | 0.487 +/- 0.058 |
-| Identity | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 |
-| STRING (gene-symbol filtered) | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 | 0.000 +/- 0.000 |
+```python
+import pickle
+with open("RA_PainKG_final.pkl", "rb") as f:
+    g = pickle.load(f)
 
-Values are mean +/- SD across 10 splits. Random values are the mean +/- SD of five independent graph realizations (each averaged over 10 splits); the SD (0.010–0.015) reflects inter-realization variability. Individual realizations range from r = 0.641 to 0.667 (all genes). GO-painCentric nominally exceeds GO on all-genes r but the difference is not significant (see Table 2). Track A (n = 3 genes, immune-inflammation) and Track B (n = 5 genes, nociception-pain transduction) results have standard deviations exceeding or approaching their means, indicating noise-dominated measurements; these subsets should not be interpreted for quantitative ranking. The Identity (no-edge) and STRING KGs both produced r = 0.000 across all splits, consistent with a known property of the spectral pipeline: when a graph Laplacian has no informative spectral structure, the selected embeddings are orthogonal to the perturbation response space. The STRING result (r = 0.000 despite 15,403 edges) does not contradict the density hypothesis because STRING edges were filtered to gene-symbol-level precision at the 5,045-gene scale, which degrades the spectral structure relative to the intentionally dense Random graphs; this filtering was necessary for identifier compatibility but likely removed most of STRING's topological information. The representative dense graph Random_R1 (all-genes r = 0.667, pain r = 0.620) is used for paired comparisons in Table 2.
+# Find all drugs targeting PTGS2 (COX-2)
+ptgs2_drugs = []
+for node, data in g.nodes(data=True):
+    if str(data.get("node_name", "")).upper() == "PTGS2":
+        for pred in g.predecessors(node):
+            if g.nodes[pred].get("node_type") == "drug":
+                ptgs2_drugs.append((g.nodes[pred]["node_name"],
+                                    g[pred][node].get("relation")))
+print(ptgs2_drugs)
+# Example output: [("Celecoxib", "inhibits"), ("Aspirin", "inhibits"), ...]
+```
 
-**Table 3. Paired comparisons with delta-r 95% confidence intervals (pain genes)**
+### 4.2 Extracting Pathway Subnetworks
 
-| Comparison | Delta r | 95% CI | p-value | Significant (nominal) | Significant (Bonferroni) |
-|-----------|---------|--------|---------|----------------------|------------------------|
-| Random_R1 vs RA-PainKG | +0.117 | [+0.083, +0.150] | <0.001 | *** | *** |
-| Random_R1 vs GO | +0.078 | [+0.059, +0.096] | <0.001 | *** | *** |
-| GO-painCentric vs GO | -0.019 | [-0.047, +0.010] | 0.22 | ns | ns |
-| RA-PainKG vs GO | -0.039 | [-0.078, +0.000] | 0.084 | ns | ns |
-| RA-PainKG-degPreserved vs RA-PainKG | -0.020 (pain) / -0.005 (all) | [-0.065, +0.025] / [-0.052, +0.041] | 0.41 / 0.83 | ns | ns |
+```python
+# Extract the opioid signaling subnetwork
+opioid_genes = {"OPRM1", "OPRD1", "OPRK1", "POMC", "PENK", "PDYN"}
+opioid_nodes = {n for n, d in g.nodes(data=True)
+                if str(d.get("node_name", "")).upper() in opioid_genes}
+subgraph = g.subgraph(opioid_nodes)
+import networkx as nx
+nx.write_graphml(subgraph, "opioid_pathway.graphml")
+```
 
-*Shapiro-Wilk tests confirm normality of all paired differences (all W > 0.94, p > 0.05). Bonferroni-adjusted threshold for m = 5 comparisons: alpha = 0.01. All conclusions are identical at nominal and adjusted thresholds.*
+### 4.3 Tissue Expression Profile Retrieval
 
-**Cross-split consistency:** Kendall's W = 0.64 (all-genes) and 0.65 (pain-genes) across 8 non-degenerate KGs, reflecting moderate ranking consistency. The best-performing dense graph (Random_R1) ranked first in 26 of 30 split-subset combinations. GO ranked second in 18/30, RA-PainKG third in 22/30.
+```python
+# Retrieve GTEx tissue expression for all Track B pain genes
+track_b_genes = [d["node_name"] for _, d in g.nodes(data=True)
+                 if d.get("track") == "B" and d.get("node_type") == "gene/protein"]
+for gene in track_b_genes[:5]:
+    expr = d.get("gtex_median_tpm", {})
+    spinal_cord = expr.get("Spinal_Cord_cervical_c-1", "N/A")
+    tibial_nerve = expr.get("Nerve_Tibial", "N/A")
+    print(f"{gene}: Spinal={spinal_cord}, Tibial={tibial_nerve}")
+```
 
-**Nonlinear model comparison:** A 2-layer MLP (128 hidden units, ReLU activation, alpha = 0.1, early stopping) trained on one representative split (seed 42) yielded lower performance than ridge regression (GO: r = 0.46; RA-PainKG: r = 0.46) and attenuated KG distinctions (delta < 0.01). This single-split exploratory result provides qualitative evidence that the linear model is more informative for KG ablation; formal multi-split nonlinear benchmarking is deferred to future work.
+### 4.4 Identifying Bridge Genes Between Tracks
 
-#### 3.3.5 Ablation Analysis
-
-**Density ablation:** Performance tracks edge density monotonically. GO-painCentric (121,543 edges, 18% of GO edges) achieves performance statistically indistinguishable from full GO (delta = -0.019, p = 0.22 for pain-genes; delta = +0.014, p = 0.17 for all-genes), demonstrating that the vast majority of GO's predictive value concentrates in edges involving pain-relevant genes.
-
-**Topology ablation:** RA-PainKG-degPreserved achieves statistically indistinguishable performance from RA-PainKG (delta = -0.020 for pain-genes, p = 0.41; delta = -0.005 for all-genes, p = 0.83). Edge identity provides no measurable advantage over random connections with matched degree distribution—the binding constraint is edge count, not edge semantics.
-
-**Domain specificity ablation:** The ranking Random > GO > RA-PainKG is invariant across all gene subsets with adequate statistical power (all genes, pain, non-pain, Track Dual). On the 44-gene pain subset, GO nominally outperforms RA-PainKG (0.542 vs 0.503, p = 0.084 ns), though the difference does not reach significance. Track A (n = 3) and Track B (n = 5) subsets are underpowered for meaningful comparison.
-
-#### 3.3.6 Sensitivity Analysis
-
-**Alpha regularization:** Performance plateaus for alpha >= 0.1 across all KGs. GO varies from r = 0.57 (alpha = 0.001) to r = 0.59 (alpha = 0.1) to r = 0.44 (alpha = 100.0). The default alpha = 0.1 is at the performance plateau.
-
-**Embedding dimension (k):** Performance increases from k = 32 to k = 64, then plateaus at k = 128–256. GO: r = 0.54 (k = 32), 0.58 (k = 64), 0.59 (k = 128), 0.59 (k = 256). The default k = 128 is at the performance plateau.
-
-#### 3.3.7 Random Graph Realization Stability
-
-Across five independent random graph realizations (each with 673,899 edges), all-genes Pearson r ranges from 0.641 to 0.667 (mean = 0.653, SD across realizations = 0.010, or 1.5% of the mean). Pain-genes r ranges from 0.570 to 0.620 (mean = 0.591, SD = 0.015). The low inter-realization variability confirms that dense random graphs are robust prediction backbones.
-
-#### 3.3.8 Bridge Genes and Knowledge Gap Quantification
-
-RA-PainKG identifies bridge genes connecting inflammatory (Track A) and nociceptive (Track B) subgraphs. Top bridges include STAT3 (score 35), RELA (24), and the NF-kappaB complex (IKBKB, IKBKG, NFKB1). The KG quantifies knowledge gaps relevant to domain-specific prior knowledge: 72 of 192 core pain genes (37.5%) are absent from PrimeKG, and 50% of Track B genes present in the KG are isolated (no PPI edges). These gaps constrain the predictive value of domain-specific prior knowledge for perturbation prediction (see Discussion 4.2 for extrapolation analysis).
+```python
+# Find genes connecting Track A and Track B in the PPI subgraph
+track_a_nodes = {n for n, d in g.nodes(data=True) if d.get("track") == "A"}
+track_b_nodes = {n for n, d in g.nodes(data=True) if d.get("track") == "B"}
+ppi_edges = [(u, v) for u, v, d in g.edges(data=True)
+             if d.get("relation") == "protein_protein"]
+bridge_scores = {}
+for u, v in ppi_edges:
+    if u in track_a_nodes and v in track_b_nodes:
+        bridge_scores[u] = bridge_scores.get(u, 0) + 1
+        bridge_scores[v] = bridge_scores.get(v, 0) + 1
+top_bridges = sorted(bridge_scores.items(), key=lambda x: x[1], reverse=True)[:10]
+# Top bridges include STAT3, RELA, NFKB1, IKBKB
+```
 
 ---
+
 
 ## 4. Discussion
 
@@ -266,18 +276,19 @@ RA-PainKG fills a specific gap in the biomedical database landscape: a tissue-co
 | Pain-specific organization | No | No | Yes | No | Yes (dual-track) |
 | Coverage-gap documentation | N/A | N/A | N/A | N/A | Yes (72 genes) |
 | Open-source formats | Yes | Yes | Yes | Yes | Yes (GraphML/CSV/PKL) |
+| Known limitations | N/A | N/A | N/A | N/A | 62.5% pain gene coverage; no DRG/synovium GTEx data; static representation |
 
 RA-PainKG serves three primary use cases. First, as a queryable knowledge base: researchers can extract pathway subnetworks (all nine curated pain pathways), identify drugs targeting specific pain genes, and retrieve tissue expression profiles for pain genes across 54 human tissues. Second, as a hypothesis-generation tool: the dual-track framework enables systematic comparison of inflammatory versus nociceptive mechanisms, and bridge genes (STAT3, RELA, NF-kappaB complex) connecting both tracks represent candidate intervention points where anti-inflammatory and analgesic effects may converge. Third, as prior knowledge for machine learning: the graph provides structured domain knowledge for downstream applications including gene perturbation prediction, drug repurposing, and causal mediator identification.
 
 ### 4.2 The Value of Coverage-Gap Documentation
 
-The systematic identification of 72 absent genes (37.5% of the curated set) represents a resource contribution in its own right. Rather than silently omitting these genes, RA-PainKG documents exactly which genes are missing, why (identifier mismatch, annotation gaps in PrimeKG), and where researchers should look for alternative information (Supplementary Table S3). This transparency serves multiple purposes: (1) it prevents false-negative conclusions when querying RA-PainKG for specific genes; (2) it identifies systematic curation biases (complement cascade, anesthetic targets, GABA receptors are underrepresented across all general-purpose biomedical KGs); and (3) it provides a prioritized list for future resource development. This approach-a knowledge graph that explicitly documents what it does not contain-is uncommon in the biomedical database literature and represents a methodological contribution for transparent resource development.
+The systematic identification of 72 absent genes (37.5% of the curated set) represents a resource contribution in its own right. Rather than silently omitting these genes, RA-PainKG documents exactly which genes are missing, why (identifier mismatch, annotation gaps in PrimeKG), and where researchers should look for alternative information (Supplementary Table S3). This transparency serves multiple purposes: (1) it prevents false-negative conclusions when querying RA-PainKG for specific genes; (2) it identifies systematic curation biases (complement cascade, anesthetic targets, GABA receptors are underrepresented across all general-purpose biomedical KGs); and (3) it provides a prioritized list for future resource development. This approach-a knowledge graph that explicitly documents what it does not contain-is uncommon in the biomedical database literature. While resources such as the IUPHAR/BPS Guide to Pharmacology [14] acknowledge incomplete coverage in narrative form, systematic per-gene gap documentation with categorized absence reasons is rarely implemented. We argue this practice represents a methodological contribution for transparent resource development.
 
 ### 4.3 Benchmark Validation and Boundary Conditions
 
-Benchmark validation across 11 KG variants using the Norman K562 Perturb-seq dataset [20] provides transparent performance characterization (Tables 2-3). Two findings merit discussion.
+Benchmark validation across 11 KG variants using the Norman K562 Perturb-seq dataset [20] provides transparent performance characterization (Supplementary Tables S4-S5). Two findings merit discussion.
 
-First, the validation establishes honest boundary conditions. K562 chronic myeloid leukemia cells are fundamentally mismatched to RA pain biology: 59.1% of measurable pain genes (26/44 overlapping) exhibit mean expression below 0.01 in K562 cells, and mean pain-gene expression (0.117) is comparable to the genome-wide background (0.107). Only 26.7% of RA-PainKG pain genes (44/165) are present in the Norman dataset. Consequently, perturbation prediction performance on K562 cells should not be interpreted as a measure of RA-PainKG's biological validity-it reflects the test system's limitations, not the resource's quality.
+First, the validation establishes honest boundary conditions. We emphasize that K562 cells were selected not as a biologically appropriate test system for RA pain (they are not), but as the only publicly available genome-scale Perturb-seq dataset with sufficient coverage to run a controlled multi-split benchmark. The purpose of this validation is not to demonstrate biological utility-it is to characterize the resource's predictive properties in a standardized setting and to establish transparent performance baselines against which future evaluations in disease-relevant models can be compared. K562 chronic myeloid leukemia cells are fundamentally mismatched to RA pain biology: 59.1% of measurable pain genes (26/44 overlapping) exhibit mean expression below 0.01 in K562 cells, and mean pain-gene expression (0.117) is comparable to the genome-wide background (0.107). Only 26.7% of RA-PainKG pain genes (44/165) are present in the Norman dataset. Consequently, perturbation prediction performance on K562 cells should not be interpreted as a measure of RA-PainKG's biological validity-it reflects the test system's limitations, not the resource's quality.
 
 Second, the benchmark reveals a methodological consideration for KG evaluation: single-split evaluation produces artifacts. Under one split (seed 42), RA-PainKG appeared to outperform GO on pain genes (r = 0.558 vs 0.481), but the effect reversed under multi-split averaging (0.503 vs 0.542). This demonstrates the necessity of multi-split statistics for reliable KG evaluation-findings that apply to any domain-specific KG benchmark, not just RA-PainKG.
 
