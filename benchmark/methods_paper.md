@@ -90,46 +90,14 @@ RA-PainKG gene nodes (type "gene/protein") are extracted from RA_PainKG_final.gr
 
 The Norman et al. Perturb-seq dataset (DOI: 10.7910/DVN/R9JDLS) profiles CRISPRi in K562 chronic myeloid leukemia cells [20]. The processed dataset (perturb_processed.h5ad, 2.2 GB; Harvard Dataverse datafile 6154020) contains 5,045 genes across 91,205 cells with 284 perturbation conditions (single-gene and combinatorial). We aggregate cells by perturbation condition to compute mean post-perturbation expression changes (delta = condition_mean - ctrl_mean). Control expression variance across genes is 0.194 (SD = 0.441), computed from log-normalized expression values.
 
-### 2.5 Gene Embedding and Prediction Model
+### 2.5 Benchmark Validation Methods
 
-For each KG, we compute 128-dimensional gene embeddings via spectral decomposition of the normalized graph Laplacian: L = I - D^{-1/2} A D^{-1/2}, extracting eigenvectors corresponding to the k smallest non-zero eigenvalues. For graphs with isolated nodes (RA-PainKG: 68.3% of genes), these nodes receive near-zero embeddings that contribute no predictive signal in the linear model--a feature that accurately reflects their lack of KG-derived prior information. The perturbation prediction model is:
+For validation, 128-dimensional gene embeddings were computed via spectral decomposition of the normalized graph Laplacian (k = 128) for each KG [22]. Perturbation effects were predicted via ridge regression (lambda = 0.1) across 10 independent train/test splits (80%/20%). This linear architecture isolates KG contribution from model capacity. Paired t-tests with Bonferroni correction (alpha = 0.01, m = 5) and Kendall's W ranking consistency were used for statistical comparison. Sensitivity analyses for regularization (alpha = 0.001--100.0) and embedding dimension (k = 32--512) confirmed robustness. K562 pain gene expression was quantified per-gene for all 44 pain-annotated genes (mean expression, percent expressing cells). Complete methods, including spectral decomposition details, nonlinear model comparison (MLP vs ridge), GEARS architecture comparison [21], evaluation protocol, and power analysis, are provided in Supplementary Methods.
 
-    predicted_delta = W^T * emb(perturbed_gene)
+### 2.6 Implementation
 
-where W (128 x 5045) is learned via ridge regression (lambda = 0.1). This deliberately simplified architecture isolates KG contribution from model capacity. We validate robustness across regularization strengths (alpha = 0.001, 0.01, 0.1, 1.0, 10.0, 100.0) and embedding dimensions (k = 32, 64, 128, 256, 512).
+Python 3.10+, ScanPy 1.12, NetworkX 3.6, NumPy, SciPy, scikit-learn. Total compute time: approximately 12 minutes (Intel i9-13900K, 64 GB RAM). Full pipeline and processed data at https://github.com/yyx-4113/ra-painkg.
 
-**Justification of linear model choice:** We compared ridge regression against a 2-layer multilayer perceptron (MLP) with 128 hidden units and ReLU activation, trained on one representative split (seed 42). The MLP yielded lower performance (r = 0.46 vs r = 0.52–0.59 for ridge) and attenuated KG distinctions (GO: r = 0.459, RA-PainKG: r = 0.458, delta < 0.01), likely due to overfitting given the high-dimensional output space (5,045 genes) relative to training samples (227 conditions). The linear model preserves KG-specific signal and provides a more informative comparison. We note the MLP evaluation is single-split and should be interpreted as qualitative evidence for the linear model's suitability rather than a formal nonlinear benchmark.
-
-This design contrasts with the full GEARS architecture [21], which uses GraphSAGE message-passing and cross-gene attention--mechanisms that may differentially exploit KG structure. Our results measure KG embedding quality in a controlled linear setting rather than end-to-end GEARS performance.
-
-**Compute requirements:** Spectral decomposition of each 5,045 x 5,045 adjacency matrix required 40–66 seconds (Intel i9-13900K, 64 GB RAM, single core). Data loading (40 seconds), KG construction (GO: 100 seconds; RA-PainKG: 12 seconds), and benchmark execution (10 splits x 11 KGs, <1 second per split-KG combination) brought the total wall-clock time to approximately 12 minutes. Peak memory usage was approximately 2.5 GB during simultaneous matrix operations.
-
-### 2.6 Evaluation Protocol
-
-Perturbation conditions (n = 283, excluding ctrl) are split into train (80%, approximately 227 conditions) and test (20%, approximately 56 conditions). We run 10 independent splits with different random seeds (42, 179, 316, ..., 1275). For each split:
-
-1. Train ridge regression on training conditions; predict on test conditions
-2. Compute Pearson r, MSE, and RMSE as fraction of control expression SD
-3. Stratify metrics by gene subset: all genes (5,045), pain-annotated (n = 44), non-pain (5,001), Track A (n = 3), Track B (n = 5), Dual (n = 36)
-
-Statistical comparisons:
-- **Paired t-tests** across 10 splits, validated by Shapiro-Wilk normality tests
-- **Delta-r 95% confidence intervals** via t-distribution
-- **Bonferroni correction** for multiple comparisons: with m = 5 primary tests (Supplementary Table S5), the adjusted significance threshold is alpha = 0.05/5 = 0.01. All conclusions reported at both nominal and adjusted thresholds.
-- **Cross-split ranking consistency** via Kendall's W coefficient
-- **Effect sizes** reported as Cohen's d
-
-Power analysis: the RA-PainKG vs GO comparison (d = -0.61) requires 21 splits for 80% power at two-sided alpha = 0.05; our 10 splits provide 55% power for this comparison. Results are interpreted as "insufficient evidence for a difference" rather than "evidence of equivalence."
-
-### 2.7 K562 Pain Gene Expression Quantification
-
-To assess biological relevance of pain gene perturbation effects in K562 cells, we computed per-gene mean expression (log-normalized units) and percentage of expressing cells (non-zero entries) for all 44 pain-annotated genes in the Norman vocabulary. Given that 59.1% of measurable pain genes fall below the expression threshold and mean pain-gene expression (0.117) is comparable to the genome-wide mean (0.107), we treat the pain-gene subset results as exploratory and interpret density-driven conclusions primarily through the non-pain gene subset (n = 5,001), where the benchmark is adequately powered.
-
-### 2.8 Implementation
-
-Python 3.10+, ScanPy 1.12, NetworkX 3.6, NumPy, SciPy, scikit-learn. Full pipeline and processed KG adjacency matrices are available at https://github.com/yyx-4113/ra-painkg.
-
----
 
 ## 3. Results
 
@@ -137,7 +105,7 @@ Python 3.10+, ScanPy 1.12, NetworkX 3.6, NumPy, SciPy, scikit-learn. Full pipeli
 
 RA-PainKG is publicly available in three formats: GraphML (network visualization), CSV (edge and node tables), and Python pickle (programmatic access via NetworkX). The complete resource includes: (1) the full knowledge graph with 18,069 nodes and 127,226 directed edges; (2) GTEx v8 tissue expression annotations for 165 pain-annotated genes across 54 human tissues; (3) dual-track gene assignments with supporting literature evidence; and (4) mapping of nine curated pain signaling pathways onto the graph structure.
 
-The graph spans 10 entity types (gene/protein, drug, disease, pathway, biological process, molecular function, cellular component, anatomy, phenotype, phenotype) and 24 relation types, with drug-target edges (4,760 edges) enabling direct pharmacological queries. Network topology analysis identified EGR1, FOS, STAT3, JUN, and AKT1 as the top five hub nodes by betweenness centrality (Figure 1). The degree distribution follows a scale-free pattern characteristic of biological networks (Figure 2).
+The graph spans 10 entity types (gene/protein, drug, disease, pathway, biological process, molecular function, cellular component, anatomy, phenotype) and 24 relation types, with drug-target edges (4,760 edges) enabling direct pharmacological queries. Network topology analysis identified EGR1, FOS, STAT3, JUN, and AKT1 as the top five hub nodes by betweenness centrality (Figure 1). The degree distribution follows a scale-free pattern characteristic of biological networks (Figure 2).
 
 All nine literature-curated pain signaling pathways were successfully mapped onto RA-PainKG with gene coverage ranging from 57% (complement cascade) to 100% (TRP channels, voltage-gated sodium channels, neurotrophin signaling). The dual-track organization is summarized in Table S1: Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes), with 96 genes (58.2%) spanning both tracks. The substantial Track A/B overlap (58.2%) is biologically expected: transcription factors (FOS, JUN, STAT3) activated by inflammatory cytokines also drive nociceptive sensitization, MAP kinases transduce both inflammatory and pain signals, and prostaglandins (via COX-2/PTGS2) bridge immune activation and nociceptor sensitization [5,7]. Rather than indicating poor track separation, this overlap reflects the mechanistic reality that inflammation and pain are deeply coupled in RA. The dual-track framework serves as a conceptual lens for hypothesis generation: genes exclusive to Track A or B may represent intervention points where anti-inflammatory and analgesic effects can be partially decoupled, while dual-track hub genes represent convergence points where both processes are jointly regulated.
 
@@ -223,8 +191,6 @@ We emphasize that the K562 benchmark cannot resolve whether domain KGs improve p
 **Static representation:** RA-PainKG is a static knowledge graph; it does not model condition-specific dynamics, temporal regulation, or quantitative interaction strengths.
 
 **Identifier resolution:** PrimeKG node IDs are internal integers. Cross-referencing with standard identifiers (HGNC, Ensembl) requires the original prime_kg.csv file, which is available from the PrimeKG repository.
-
-
 
 ### 4.5 Updates and Community Contributions
 
