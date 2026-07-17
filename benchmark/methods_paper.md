@@ -2,23 +2,11 @@
 
 ## Manuscript | Target: *Database: The Journal of Biological Databases and Curation*
 
----
-
-# RA-PainKG: Construction, Coverage-Gap Documentation, and Benchmark Validation of a Tissue-Contextualized Knowledge Graph for Rheumatoid Arthritis Pain Signaling
-
-**Yongxin Yang (杨永新)**<sup>1,*</sup>
-
-<sup>1</sup> Department of Anesthesiology, The Second Affiliated Hospital of Fujian University of Traditional Chinese Medicine, Fuzhou 350000, Fujian, China
-
-<sup>*</sup> Corresponding author: 960856791@qq.com
-
----
-
-## Abstract
+---## Abstract
 
 **Objective:** Rheumatoid arthritis (RA) pain persists despite effective inflammation control, indicating that analgesic and inflammatory mechanisms are partially dissociable. Existing biological network resources do not distinguish pain-specific signaling pathways, provide tissue-contextual information for nociception-relevant compartments, or systematically document knowledge gaps. We present RA-PainKG, a tissue-contextualized knowledge graph with comprehensive coverage-gap documentation and benchmark validation.
 
-**Materials and Methods:** RA-PainKG was constructed by integrating PrimeKG v1.0, GTEx v8 tissue expression data (54 tissues), and manual curation of nine core pain signaling pathways. Starting from 192 manually curated pain genes, 120 were identified in PrimeKG by exact symbol matching; 2-hop neighborhood expansion discovered 45 additional pain-relevant genes, yielding 165 annotated genes organized into Track A (immune-inflammation) and Track B (nociception). The graph contains 18,069 nodes (10 entity types) and 127,226 directed edges (24 relation types). All nine curated pathways were mapped (gene coverage: 57–100%). A systematic coverage-gap analysis identified 72 core pain genes absent from PrimeKG. Validation was performed via a multi-split ablation benchmark using the Norman Perturb-seq dataset (91,205 K562 cells) across 11 KG variants.
+**Materials and Methods:** RA-PainKG was constructed by integrating PrimeKG v1.0, GTEx v8 tissue expression data (54 tissues), and manual curation of 15 functional gene categories spanning nine core pain signaling pathways. Starting from 192 manually curated pain genes, 120 were identified in PrimeKG by exact symbol matching; 2-hop neighborhood expansion discovered 45 additional pain-relevant genes, yielding 165 annotated genes organized into Track A (immune-inflammation) and Track B (nociception). The graph contains 18,069 nodes (10 entity types) and 127,226 directed edges (24 relation types). All nine curated pathways were mapped (gene coverage: 57–100%). A systematic coverage-gap analysis identified 72 core pain genes absent from PrimeKG. Validation was performed via a multi-split ablation benchmark using the Norman Perturb-seq dataset (91,205 K562 cells) across 11 KG variants.
 
 **Results:** RA-PainKG captures 120 of 192 core pain genes (62.5%) and maps all nine literature-curated pain signaling pathways. Coverage-gap analysis revealed that 37.5% of core pain genes are absent from PrimeKG, concentrated in complement cascade, anesthetic targets, and GABA receptor families. Network topology identified EGR1, FOS, STAT3, JUN, and AKT1 as top hub nodes by betweenness centrality. Benchmark validation confirmed that the graph's predictive utility is constrained by K562 cell-type limitations (59.1% of measurable pain genes below expression threshold), establishing honest boundary conditions for downstream applications.
 
@@ -36,11 +24,11 @@ Rheumatoid arthritis (RA) affects approximately 1% of the global population, cau
 
 The molecular basis of RA pain operates across multiple anatomical compartments. Peripheral nociceptors express transduction channels (TRPV1, TRPA1, Nav1.7/SCN9A) that initiate pain signals [5,6]. Spinal dorsal horn circuits process these signals through neuropeptide and neurotrophin mediators (CGRP, Substance P, BDNF-TrkB) [7]. Descending modulatory pathways (opioid, GABAergic, serotonergic) regulate pain transmission from supraspinal centers. These mechanisms operate in distinct tissue contexts that generic interaction networks cannot distinguish.
 
-Existing biological network resources have critical limitations for pain mechanism research. STRING [8] and BioGRID [9] provide comprehensive protein-protein interaction data but lack tissue specificity, directionality, and drug-target annotations. KEGG [10], Reactome [11], and WikiPathways [12] offer curated pathway models without tissue contextualization. PrimeKG [13] integrates 20 biomedical resources into a unified multimodal knowledge graph, representing a major advance over single-source networks. However, PrimeKG remains a general-purpose resource: it does not distinguish pain-specific signaling from general inflammatory pathways, lacks tissue expression filtering, and provides no systematic documentation of coverage gaps. Pain-focused resources such as the IUPHAR/BPS Guide to Pharmacology [14] and the Human Pain Genetics Database [15] curate pain-relevant genes but lack network connectivity and multi-entity integration.
+Existing biological network resources have critical limitations for pain mechanism research. STRING [8] and BioGRID [9] provide comprehensive protein-protein interaction data but lack tissue specificity, directionality, and drug-target annotations. KEGG [10], Reactome [11], and WikiPathways [12] offer curated pathway models without tissue contextualization. PrimeKG [13] integrates 20 biomedical resources into a unified multimodal knowledge graph, representing a major advance over single-source networks. However, PrimeKG remains a general-purpose resource: it does not distinguish pain-specific signaling from general inflammatory pathways, lacks tissue expression filtering, and provides no systematic documentation of coverage gaps. Pain-focused resources such as the IUPHAR/BPS Guide to Pharmacology [14] and the Human Pain Genetics Database [15] curate pain-relevant genes, while DisGeNET [17] provides gene-disease associations, but these resources lack network connectivity and multi-entity integration.
 
 The consequence is a fragmented resource landscape. Researchers must either use general-purpose knowledge graphs that lack pain-specific organization, or pain-specific gene lists that lack network structure. A resource that integrates curated pain gene annotations with multimodal biomedical network data, provides tissue-contextual filtering, and systematically documents knowledge gaps would fill a specific and well-defined need.
 
-We present RA-PainKG, a tissue-contextualized dual-track knowledge graph constructed by integrating PrimeKG v1.0 [13] with GTEx v8 tissue expression data [16] and manual curation of nine core pain signaling pathways. The resource contains 18,069 nodes across 10 entity types and 127,226 directed edges across 24 relation types. Starting from 192 manually curated pain genes, 120 (62.5%) matched PrimeKG by exact symbol; 2-hop neighborhood expansion identified 45 additional pain-relevant genes, yielding 165 annotated genes organized into Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes, with 96 overlapping). A systematic coverage-gap analysis documents 72 core pain genes (37.5%) absent from PrimeKG. Transparent benchmark validation using the Norman K562 Perturb-seq dataset [20] establishes honest boundary conditions. All graph files, source code, and documentation are publicly available under the MIT license at https://github.com/yyx-4113/ra-painkg [19].
+We present RA-PainKG, a tissue-contextualized dual-track knowledge graph constructed by integrating PrimeKG v1.0 [13] with GTEx v8 tissue expression data [16] and manual curation of 15 functional gene categories spanning nine core pain signaling pathways. The resource contains 18,069 nodes across 10 entity types and 127,226 directed edges across 24 relation types. Starting from 192 manually curated pain genes, 120 (62.5%) matched PrimeKG by exact symbol; 2-hop neighborhood expansion identified 45 additional pain-relevant genes, yielding 165 annotated genes organized into Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes, with 96 overlapping). A systematic coverage-gap analysis documents 72 core pain genes (37.5%) absent from PrimeKG. Transparent benchmark validation using the Norman K562 Perturb-seq dataset [20] establishes honest boundary conditions. All graph files, source code, and documentation are publicly available under the MIT license at https://github.com/yyx-4113/ra-painkg [19].
 
 
 **Significance Statement**
@@ -236,7 +224,7 @@ We emphasize that the K562 benchmark cannot resolve whether domain KGs improve p
 
 **Identifier resolution:** PrimeKG node IDs are internal integers. Cross-referencing with standard identifiers (HGNC, Ensembl) requires the original prime_kg.csv file, which is available from the PrimeKG repository.
 
-**Validation scope:** Benchmark validation is limited to K562 cells. Replication in disease-relevant cell types is essential before drawing conclusions about domain KG utility for pain biology applications.
+
 
 ### 4.5 Updates and Community Contributions
 
@@ -244,10 +232,9 @@ RA-PainKG will be updated with each major PrimeKG release. Community contributio
 
 ### 4.6 Conclusion
 
-RA-PainKG provides a tissue-contextualized, dual-track knowledge graph for RA pain signaling with systematic coverage-gap documentation-a resource type not previously available for pain biology research. The graph, its construction pipeline, and comprehensive documentation are publicly available at https://github.com/yyx-4113/ra-painkg under the MIT license. Transparent benchmark validation establishes honest boundary conditions, and systematic coverage-gap documentation identifies specific priorities for future resource development. The open-source construction framework is designed for extensibility to other diseases where domain-specific knowledge graphs with documented knowledge gaps would accelerate mechanistic research.
+RA-PainKG provides a tissue-contextualized, dual-track knowledge graph for RA pain signaling with systematic coverage-gap documentation-a resource type not previously available for pain biology research. The graph, its construction pipeline, and comprehensive documentation are publicly available at https://github.com/yyx-4113/ra-painkg under the MIT license.
 
----
-
+Transparent benchmark validation establishes honest boundary conditions for downstream applications, and systematic coverage-gap documentation identifies specific priorities for future resource development. The open-source construction framework is designed for extensibility to other diseases where domain-specific knowledge graphs with documented knowledge gaps would accelerate mechanistic research.
 
 ---
 
@@ -255,7 +242,7 @@ RA-PainKG provides a tissue-contextualized, dual-track knowledge graph for RA pa
 
 RA-PainKG is designed for programmatic access via Python (NetworkX). Below are four representative use cases. All code is available in the GitHub repository.
 
-**Setup.** Download RA_PainKG_final.pkl from the GitHub repository and place it in your working directory:
+**Setup.** Download `RA_PainKG_final.pkl` from [https://github.com/yyx-4113/ra-painkg](https://github.com/yyx-4113/ra-painkg) (see `output/` directory) and place it in your working directory:
 
 ```python
 import pickle
@@ -332,13 +319,25 @@ top_bridges = sorted(scores.items(), key=lambda x: x[1], reverse=True)[:10]
 
 **Figure 2.** Degree distribution of RA-PainKG (log-log scale) with power-law fit. The scale-free topology is characteristic of biological networks.
 
-**Figure 3.** Comparison of centrality distributions between Track A (immune-inflammation) and Track B (nociception-pain transduction) gene subsets.
+**Figure 3.** Comparison of centrality distributions between Track A (immune-inflammation, n = 106 genes) and Track B (nociception-pain transduction, n = 122 genes) gene subsets. Betweenness, degree, closeness, and eigenvector centrality are shown as violin plots. Track B genes show systematically lower centrality across all metrics, consistent with their sparser representation in PrimeKG.
 
-**Figure 4.** Node type composition and edge relation distribution in RA-PainKG. The graph spans 10 entity types and 24 relation types.
+**Figure 4.** Node type composition (pie chart, 10 entity types) and edge relation distribution (bar chart, top 10 of 24 relation types) in RA-PainKG. Protein-protein interactions account for 2,400 edges (1.9%), with the remaining 124,826 edges distributed across pathway, bioprocess, drug-target, and other relation types.
 
 **Figure 5.** Core signaling network visualization showing the top 50 hub nodes and their interconnections. Node color indicates track assignment.
 
-**Figure 6.** Pathway subnetwork visualizations for nine curated pain signaling pathways mapped onto RA-PainKG.
+**Figure 6.** Pathway subnetwork visualizations for the nine curated pain signaling pathways mapped onto RA-PainKG. Each panel shows a single pathway: TRP channels, voltage-gated sodium channels, neurotrophin signaling, opioid signaling, MAPK pathway, JAK-STAT pathway, prostaglandin pathway, complement cascade, and GABA/glycine receptors. Node color indicates track assignment (Track A, Track B, or Dual). Edge directionality indicates known signaling relationships.
+
+## Supplementary Materials
+
+- **Table S1:** Complete 165-gene pain gene list with functional categories, PrimeKG match status, and track assignments
+- **Table S2:** Full edge relation type distribution (all 24 types)
+- **Table S3:** Coverage-gap analysis: 72 genes absent from PrimeKG with functional categories and suggested alternative identifiers
+- **Table S4:** Multi-split benchmark results for all 11 KG variants
+- **Table S5:** Paired statistical comparisons with delta-r confidence intervals
+- **Table S6:** KG variant structural characteristics
+- **Supplementary Methods:** Spectral decomposition details, nonlinear model comparison (MLP vs ridge), GEARS architecture comparison, evaluation protocol, power analysis
+- **Figure S1-S6:** Supplementary figures (degree distribution, track comparison, composition, core network, pathway subnetworks)
+
 
 ## AI Usage Statement
 
