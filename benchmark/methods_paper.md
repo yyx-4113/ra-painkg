@@ -22,7 +22,7 @@
 
 ## 1. Introduction
 
-Rheumatoid arthritis (RA) affects approximately 1% of the global population, causing chronic synovial inflammation that leads to joint destruction and persistent pain [1,2]. Disease-modifying antirheumatic drugs and biologic agents effectively control inflammation in many patients, yet a substantial proportion continue to experience clinically significant pain [3,4]. This dissociation between anti-inflammatory efficacy and analgesia reveals a specific knowledge gap: pain signaling pathways in RA are not adequately captured by existing biological network resources.
+Rheumatoid arthritis (RA) affects approximately 0.5-1.0% of the adult population worldwide, causing chronic synovial inflammation that leads to joint destruction and persistent pain [1,2]. Disease-modifying antirheumatic drugs and biologic agents effectively control inflammation in many patients, yet a substantial proportion continue to experience clinically significant pain [3,4]. This dissociation between anti-inflammatory efficacy and analgesia reveals a specific knowledge gap: pain signaling pathways in RA are not adequately captured by existing biological network resources.
 
 The molecular basis of RA pain operates across multiple anatomical compartments. Peripheral nociceptors express transduction channels (TRPV1, TRPA1, Nav1.7/SCN9A) that initiate pain signals [5,6]. Spinal dorsal horn circuits process these signals through neuropeptide and neurotrophin mediators (CGRP, Substance P, BDNF-TrkB) [7]. Descending modulatory pathways (opioid, GABAergic, serotonergic) regulate pain transmission from supraspinal centers. These mechanisms operate in distinct tissue contexts that generic interaction networks cannot distinguish.
 
@@ -109,13 +109,13 @@ RA-PainKG is publicly available in three formats: GraphML (network visualization
 
 The graph spans 10 entity types (gene/protein, drug, disease, pathway, biological process, molecular function, cellular component, anatomy, phenotype) and 24 relation types, with drug-target edges (4,760 edges) enabling direct pharmacological queries. Network topology analysis identified EGR1, FOS, STAT3, JUN, and AKT1 as the top five hub nodes by betweenness centrality (Figure 1). The degree distribution follows a scale-free pattern characteristic of biological networks (Figure 2).
 
-All nine literature-curated pain signaling pathways were successfully mapped onto RA-PainKG with gene coverage ranging from 57% (complement cascade) to 100% (TRP channels, voltage-gated sodium channels, neurotrophin signaling). The 165 annotated genes span 15 functional categories (TRP channels, voltage-gated sodium channels, neurotrophin signaling, opioid signaling, MAPK pathway, JAK-STAT pathway, prostaglandin pathway, kinase signaling, transcription factors, serotonin receptors, endocannabinoid system, complement cascade, GABA/glycine receptors, RA-specific genes, and anesthetic targets; complete list in Supplementary Table S1). The dual-track organization is summarized in Table S1: Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes), with 96 genes (58.2%) spanning both tracks. The substantial Track A/B overlap (58.2%) is biologically expected: transcription factors (FOS, JUN, STAT3) activated by inflammatory cytokines also drive nociceptive sensitization, MAP kinases transduce both inflammatory and pain signals, and prostaglandins (via COX-2/PTGS2) bridge immune activation and nociceptor sensitization [5,7]. Rather than indicating poor track separation, this overlap reflects the mechanistic reality that inflammation and pain are deeply coupled in RA. The dual-track framework serves as a conceptual lens for hypothesis generation: genes exclusive to Track A or B may represent intervention points where anti-inflammatory and analgesic effects can be partially decoupled, while dual-track hub genes represent convergence points where both processes are jointly regulated.
+All nine literature-curated pain signaling pathways were successfully mapped onto RA-PainKG with gene coverage ranging from 57% (complement cascade) to 100% (TRP channels, voltage-gated sodium channels, neurotrophin signaling). The 165 annotated genes span 15 functional categories (TRP channels, voltage-gated sodium channels, neurotrophin signaling, opioid signaling, MAPK pathway, JAK-STAT pathway, prostaglandin pathway, kinase signaling, transcription factors, serotonin receptors, endocannabinoid system, complement cascade, GABA/glycine receptors, RA-specific genes, and anesthetic targets; complete list in Supplementary Table S1). The 165 annotated genes span 15 functional categories (TRP channels, voltage-gated sodium channels, neurotrophin signaling, opioid signaling, MAPK pathway, JAK-STAT pathway, prostaglandin pathway, kinase signaling, transcription factors, serotonin receptors, endocannabinoid system, complement cascade, GABA/glycine receptors, RA-specific genes, and anesthetic targets; complete list in Supplementary Table S1). The dual-track organization is summarized in Table S1: Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes), with 96 genes (58.2%) spanning both tracks. The substantial Track A/B overlap (58.2%) is biologically expected: transcription factors (FOS, JUN, STAT3) activated by inflammatory cytokines also drive nociceptive sensitization, MAP kinases transduce both inflammatory and pain signals, and prostaglandins (via COX-2/PTGS2) bridge immune activation and nociceptor sensitization [5,7]. Rather than indicating poor track separation, this overlap reflects the mechanistic reality that inflammation and pain are deeply coupled in RA. The dual-track framework serves as a conceptual lens for hypothesis generation: genes exclusive to Track A or B may represent intervention points where anti-inflammatory and analgesic effects can be partially decoupled, while dual-track hub genes represent convergence points where both processes are jointly regulated.
 
 ### 3.2 Coverage-Gap Analysis
 
 Of 192 core pain genes manually curated from the literature, 120 (62.5%) are represented in PrimeKG v1.0 by exact gene symbol matching. The remaining 72 genes (37.5%) constitute systematic coverage gaps in PrimeKG, concentrated in three functional categories: (1) complement cascade components (C1QA, C1QB, C1QC, C2, C3, C4A, C4B, CFB, CFD), where the complement system is increasingly recognized as a pain modulator but is poorly annotated in general-purpose biomedical KGs; (2) anesthetic drug targets (GABRA2, GABRA3, GABRB1, GABRG1, GABRG2, GLRB, GLRA1), where GABA/glycine receptor subunit diversity is not fully captured by PrimeKG's drug-target mappings; and (3) nociceptor-specific ion channels (TRPM8, ASIC3, P2RX7), where gene symbol inconsistencies between resources create mapping failures. The low match rate for complement components (35.7%) is particularly consequential: the complement system is increasingly recognized as a pain modulator through C5a-C5aR1 signaling in sensory neurons [7], and C5 polymorphisms are associated with RA susceptibility. This coverage gap means that complement-mediated pain mechanisms are essentially invisible to PrimeKG-based queries and represents a high-priority target for future KG integration.
 
-Additionally, within the 120 genes that do match PrimeKG, 50% of Track B (nociception-specific) genes are isolated in the PPI subgraph (zero protein-protein interaction edges), compared to only 20% of Track A (inflammation) genes. This asymmetry means that nociception-specific prior knowledge is systematically underrepresented even when genes are nominally present in PrimeKG.
+Additionally, within the 120 genes that do match PrimeKG, 50% of Track B (nociception-specific) genes have zero PPI edges (i.e., are graph-theoretically isolated in the PPI subgraph), compared to only 20% of Track A (inflammation) genes. This asymmetry means that nociception-specific prior knowledge is systematically underrepresented even when genes are nominally present in PrimeKG.
 
 **Table 1. Coverage-gap summary by functional category**
 
@@ -167,6 +167,8 @@ RA-PainKG fills a specific gap in the biomedical database landscape: a tissue-co
 | Coverage-gap documentation | N/A | N/A | N/A | N/A | Yes (72 genes) |
 | Open-source formats | Yes | Yes | Yes | Yes | Yes (GraphML/CSV/PKL) |
 | Known limitations | N/A | N/A | N/A | N/A | 62.5% pain gene coverage; no DRG/synovium GTEx data; static representation |
+
+Coverage percentages for comparator resources (IUPHAR Pain, DisGeNET) were computed by querying each resource for the same 192-gene curated set by gene symbol, following each resource's standard query interface. See Supplementary Methods for query details.
 
 Coverage percentages for comparator resources (IUPHAR Pain, DisGeNET) were computed by querying each resource for the same 192-gene curated set by gene symbol, following each resource's standard query interface. See Supplementary Methods for query details.
 
@@ -288,6 +290,35 @@ top_bridges = sorted(scores.items(), key=lambda x: x[1], reverse=True)[:10]
 
 ---
 
+
+## Figure Captions
+
+**Figure 1.** Top 20 hub nodes ranked by betweenness centrality in RA-PainKG. Node size is proportional to betweenness score.
+
+**Figure 2.** Degree distribution of RA-PainKG (log-log scale) with power-law fit. The scale-free topology is characteristic of biological networks.
+
+**Figure 3.** Comparison of centrality distributions between Track A (immune-inflammation, n = 106 genes) and Track B (nociception-pain transduction, n = 122 genes) gene subsets. Betweenness, degree, closeness, and eigenvector centrality are shown as violin plots. Track B genes show systematically lower centrality across all metrics, consistent with their sparser representation in PrimeKG.
+
+**Figure 4.** Node type composition (pie chart, 10 entity types) and edge relation distribution (bar chart, top 10 of 24 relation types) in RA-PainKG. Protein-protein interactions account for 2,400 edges (1.9%), with the remaining 124,826 edges distributed across pathway, bioprocess, drug-target, and other relation types.
+
+**Figure 5.** Core signaling network visualization showing the top 50 hub nodes and their interconnections. Node color indicates track assignment.
+
+**Figure 6.** Pathway subnetwork visualizations for the nine curated pain signaling pathways mapped onto RA-PainKG. Each panel shows a single pathway: TRP channels, voltage-gated sodium channels, neurotrophin signaling, opioid signaling, MAPK pathway, JAK-STAT pathway, prostaglandin pathway, complement cascade, and GABA/glycine receptors. Node color indicates track assignment (Track A, Track B, or Dual). Edge directionality indicates known signaling relationships.
+
+## Supplementary Materials
+
+- **Table S1:** Complete 165-gene pain gene list with functional categories, PrimeKG match status, and track assignments
+- **Table S2:** Full edge relation type distribution (all 24 types)
+- **Table S3:** Coverage-gap analysis: 72 genes absent from PrimeKG with functional categories and suggested alternative identifiers
+- **Table S4:** Multi-split benchmark results for all 11 KG variants
+- **Table S5:** Paired statistical comparisons with delta-r confidence intervals
+- **Table S6:** KG variant structural characteristics
+- **Supplementary Methods:** Spectral decomposition details, nonlinear model comparison (MLP vs ridge), GEARS architecture comparison, evaluation protocol, power analysis
+- **Figure S1-S6:** Supplementary figures (degree distribution, track comparison, composition, core network, pathway subnetworks)
+
+
+
+---
 
 ## Figure Captions
 
