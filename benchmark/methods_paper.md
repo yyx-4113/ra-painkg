@@ -2,7 +2,9 @@
 
 ## Manuscript | Target: *Database: The Journal of Biological Databases and Curation*
 
----## Abstract
+---
+
+## Abstract
 
 **Objective:** Rheumatoid arthritis (RA) pain persists despite effective inflammation control, indicating that analgesic and inflammatory mechanisms are partially dissociable. Existing biological network resources do not distinguish pain-specific signaling pathways, provide tissue-contextual information for nociception-relevant compartments, or systematically document knowledge gaps. We present RA-PainKG, a tissue-contextualized knowledge graph with comprehensive coverage-gap documentation and benchmark validation.
 
@@ -28,7 +30,7 @@ Existing biological network resources have critical limitations for pain mechani
 
 The consequence is a fragmented resource landscape. Researchers must either use general-purpose knowledge graphs that lack pain-specific organization, or pain-specific gene lists that lack network structure. A resource that integrates curated pain gene annotations with multimodal biomedical network data, provides tissue-contextual filtering, and systematically documents knowledge gaps would fill a specific and well-defined need.
 
-We present RA-PainKG, a tissue-contextualized dual-track knowledge graph constructed by integrating PrimeKG v1.0 [13] with GTEx v8 tissue expression data [16] and manual curation of 15 functional gene categories spanning nine core pain signaling pathways. The resource contains 18,069 nodes across 10 entity types and 127,226 directed edges across 24 relation types. Starting from 192 manually curated pain genes, 120 (62.5%) matched PrimeKG by exact symbol; 2-hop neighborhood expansion identified 45 additional pain-relevant genes, yielding 165 annotated genes organized into Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes, with 96 overlapping). A systematic coverage-gap analysis documents 72 core pain genes (37.5%) absent from PrimeKG. Transparent benchmark validation using the Norman K562 Perturb-seq dataset [20] establishes honest boundary conditions. All graph files, source code, and documentation are publicly available under the MIT license at https://github.com/yyx-4113/ra-painkg [19].
+We present RA-PainKG, a tissue-contextualized dual-track knowledge graph constructed by integrating PrimeKG v1.0 [13] with GTEx v8 tissue expression data [16] and manual curation of 15 functional gene categories spanning nine core pain signaling pathways. The resource contains 18,069 nodes across 10 entity types and 127,226 directed edges across 24 relation types. Starting from 192 manually curated pain genes, 120 (62.5%) matched PrimeKG by exact symbol; 2-hop neighborhood expansion identified 45 additional pain-relevant genes, yielding 165 annotated genes, of which 106 were assigned to Track A (immune-inflammation), 122 to Track B (nociception-pain transduction, 96 overlapping between tracks), and 33 to neither track (expansion-discovered genes without clear pain functional assignment). A systematic coverage-gap analysis documents 72 core pain genes (37.5%) absent from PrimeKG. Transparent benchmark validation using the Norman K562 Perturb-seq dataset [20] establishes honest boundary conditions. All graph files, source code, and documentation are publicly available under the MIT license at https://github.com/yyx-4113/ra-painkg [19].
 
 
 **Significance Statement**
@@ -37,7 +39,7 @@ We present RA-PainKG, a tissue-contextualized dual-track knowledge graph constru
 
 *What is Known:* General-purpose resources such as PrimeKG and STRING provide broad biological coverage but do not distinguish pain-specific signaling from general inflammatory pathways.
 
-*What this Paper Adds:* RA-PainKG, a tissue-contextualized dual-track knowledge graph integrating PrimeKG with GTEx v8 expression data and manual curation of nine pain signaling pathways. The resource includes systematic coverage-gap documentation identifying 72 core pain genes (37.5%) absent from existing biomedical knowledge graphs. All nine curated pain pathways are mapped (57-100% gene coverage), and 4,760 drug-target edges enable direct pharmacological queries.
+*What this Paper Adds:* RA-PainKG, a tissue-contextualized dual-track knowledge graph integrating PrimeKG with GTEx v8 expression data and manual curation of 15 functional gene categories spanning nine pain signaling pathways. The resource includes systematic coverage-gap documentation identifying 72 core pain genes (37.5%) absent from existing biomedical knowledge graphs. All nine curated pain pathways are mapped (57-100% gene coverage), and 4,760 drug-target edges enable direct pharmacological queries.
 
 *Who Benefits:* Pain biology researchers requiring structured, tissue-aware knowledge representations; bioinformaticians developing machine learning models with domain-specific prior knowledge; and knowledge graph curators seeking a reproducible construction framework with transparent knowledge-gap documentation.
 
@@ -45,7 +47,7 @@ We present RA-PainKG, a tissue-contextualized dual-track knowledge graph constru
 
 ### 2.1 Knowledge Graph Construction
 
-RA-PainKG was constructed in three stages (detailed protocol in [19]).
+RA-PainKG was constructed in three stages (detailed below in Sections 2.2-2.3).
 
 ### 2.2 RA-PainKG Construction Pipeline
 
@@ -53,7 +55,7 @@ RA-PainKG was constructed in three stages (detailed protocol in [19]).
 
 **Stage 2: PrimeKG integration.** Of 192 core pain genes, 120 (62.5%) matched PrimeKG v1.0 by exact gene symbol. Starting from these seed nodes, we performed 2-hop neighborhood expansion with a connectivity filter (nodes must be reachable from at least two seed categories). This identified 45 additional pain-relevant genes (e.g., CCR6, CSF2, IRF5, IFNG, FCGR3A), yielding a final annotated set of 165 genes organized into Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes, with 96 overlapping).
 
-**Tissue-contextual filtering with GTEx v8.** GTEx v8 median tissue expression data [16] were used to annotate each pain gene with tissue-specific expression levels across 54 human tissues. For nociception-relevant compartments, we used spinal cord (cervical C1), tibial nerve, whole blood, and spleen as proxies. A gene was classified as tissue-expressed if median TPM >= 1.0 in the relevant tissue. This information is provided as node attributes in the GraphML and CSV formats but was not used to filter edges in the current release, as removing edges based on bulk tissue expression risks discarding valid low-expression interactions. Future versions will incorporate single-cell expression data for finer tissue-contextual filtering.
+**Tissue-contextual filtering with GTEx v8.** GTEx v8 median tissue expression data [16] were used to annotate each pain gene with tissue-specific expression levels across 54 human tissues. For nociception-relevant compartments, we used spinal cord (cervical C1), tibial nerve, whole blood, and spleen as proxies. A gene was classified as tissue-expressed if median TPM >= 1.0 in the relevant tissue, following standard GTEx expression thresholds [16]. This information is provided as node attributes in the GraphML and CSV formats but was not used to filter edges in the current release, as removing edges based on bulk tissue expression risks discarding valid low-expression interactions. Future versions will incorporate single-cell expression data for finer tissue-contextual filtering.
 
 **Stage 3: Edge integration.** All PrimeKG edges involving the 165 annotated genes were retained: 2,400 protein-protein interaction edges and 124,826 non-PPI edges (pathway, bioprocess, drug-target across 24 relation types). Graph statistics: 18,069 nodes (10 entity types), 127,226 directed edges. Only 44 of the 165 annotated genes (26.7%) overlap with the Norman K562 Perturb-seq gene vocabulary (Supplementary Table S6).
 
@@ -107,7 +109,7 @@ RA-PainKG is publicly available in three formats: GraphML (network visualization
 
 The graph spans 10 entity types (gene/protein, drug, disease, pathway, biological process, molecular function, cellular component, anatomy, phenotype) and 24 relation types, with drug-target edges (4,760 edges) enabling direct pharmacological queries. Network topology analysis identified EGR1, FOS, STAT3, JUN, and AKT1 as the top five hub nodes by betweenness centrality (Figure 1). The degree distribution follows a scale-free pattern characteristic of biological networks (Figure 2).
 
-All nine literature-curated pain signaling pathways were successfully mapped onto RA-PainKG with gene coverage ranging from 57% (complement cascade) to 100% (TRP channels, voltage-gated sodium channels, neurotrophin signaling). The dual-track organization is summarized in Table S1: Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes), with 96 genes (58.2%) spanning both tracks. The substantial Track A/B overlap (58.2%) is biologically expected: transcription factors (FOS, JUN, STAT3) activated by inflammatory cytokines also drive nociceptive sensitization, MAP kinases transduce both inflammatory and pain signals, and prostaglandins (via COX-2/PTGS2) bridge immune activation and nociceptor sensitization [5,7]. Rather than indicating poor track separation, this overlap reflects the mechanistic reality that inflammation and pain are deeply coupled in RA. The dual-track framework serves as a conceptual lens for hypothesis generation: genes exclusive to Track A or B may represent intervention points where anti-inflammatory and analgesic effects can be partially decoupled, while dual-track hub genes represent convergence points where both processes are jointly regulated.
+All nine literature-curated pain signaling pathways were successfully mapped onto RA-PainKG with gene coverage ranging from 57% (complement cascade) to 100% (TRP channels, voltage-gated sodium channels, neurotrophin signaling). The 165 annotated genes span 15 functional categories (TRP channels, voltage-gated sodium channels, neurotrophin signaling, opioid signaling, MAPK pathway, JAK-STAT pathway, prostaglandin pathway, kinase signaling, transcription factors, serotonin receptors, endocannabinoid system, complement cascade, GABA/glycine receptors, RA-specific genes, and anesthetic targets; complete list in Supplementary Table S1). The dual-track organization is summarized in Table S1: Track A (immune-inflammation, 106 genes) and Track B (nociception-pain transduction, 122 genes), with 96 genes (58.2%) spanning both tracks. The substantial Track A/B overlap (58.2%) is biologically expected: transcription factors (FOS, JUN, STAT3) activated by inflammatory cytokines also drive nociceptive sensitization, MAP kinases transduce both inflammatory and pain signals, and prostaglandins (via COX-2/PTGS2) bridge immune activation and nociceptor sensitization [5,7]. Rather than indicating poor track separation, this overlap reflects the mechanistic reality that inflammation and pain are deeply coupled in RA. The dual-track framework serves as a conceptual lens for hypothesis generation: genes exclusive to Track A or B may represent intervention points where anti-inflammatory and analgesic effects can be partially decoupled, while dual-track hub genes represent convergence points where both processes are jointly regulated.
 
 ### 3.2 Coverage-Gap Analysis
 
@@ -166,11 +168,13 @@ RA-PainKG fills a specific gap in the biomedical database landscape: a tissue-co
 | Open-source formats | Yes | Yes | Yes | Yes | Yes (GraphML/CSV/PKL) |
 | Known limitations | N/A | N/A | N/A | N/A | 62.5% pain gene coverage; no DRG/synovium GTEx data; static representation |
 
+Coverage percentages for comparator resources (IUPHAR Pain, DisGeNET) were computed by querying each resource for the same 192-gene curated set by gene symbol, following each resource's standard query interface. See Supplementary Methods for query details.
+
 RA-PainKG serves three primary use cases. First, as a queryable knowledge base: researchers can extract pathway subnetworks (all nine curated pain pathways), identify drugs targeting specific pain genes, and retrieve tissue expression profiles across 54 human tissues. Second, as a hypothesis-generation tool: the dual-track framework enables systematic comparison of inflammatory versus nociceptive mechanisms, and bridge genes (STAT3, RELA, NF-kappaB complex) connecting both tracks represent candidate intervention points. Third, as structured prior knowledge for machine learning: the graph provides domain-specific features for gene perturbation prediction, drug repurposing pipelines, and causal mediator identification. Transparent benchmark validation (Section 4.3) establishes the boundary conditions under which each use case applies.
 
 ### 4.2 The Value of Coverage-Gap Documentation
 
-The systematic identification of 72 absent genes (37.5% of the curated set) represents a resource contribution in its own right. Rather than silently omitting these genes, RA-PainKG documents exactly which genes are missing, why (identifier mismatch, annotation gaps in PrimeKG), and where researchers should look for alternative information (Supplementary Table S3). This transparency serves multiple purposes: (1) it prevents false-negative conclusions when querying RA-PainKG for specific genes; (2) it identifies systematic curation biases (complement cascade, anesthetic targets, GABA receptors are underrepresented across all general-purpose biomedical KGs); and (3) it provides a prioritized list for future resource development. This approach-a knowledge graph that explicitly documents what it does not contain-is uncommon in the biomedical database literature. While resources such as the IUPHAR/BPS Guide to Pharmacology [14] acknowledge incomplete coverage in narrative form, systematic per-gene gap documentation with categorized absence reasons is rarely implemented. We argue this practice represents a methodological contribution for transparent resource development.
+The systematic identification of 72 absent genes (37.5% of the curated set) represents a resource contribution in its own right. Rather than silently omitting these genes, RA-PainKG documents exactly which genes are missing, why (identifier mismatch, annotation gaps in PrimeKG), and where researchers should look for alternative information (Supplementary Table S3). This transparency serves multiple purposes: (1) it prevents false-negative conclusions when querying RA-PainKG for specific genes; (2) it identifies systematic curation biases (complement cascade, anesthetic targets, GABA receptors are underrepresented across all general-purpose biomedical KGs); and (3) it provides a prioritized list for future resource development. This approach-a knowledge graph that explicitly documents what it does not contain-is, to our knowledge, rarely implemented in published biomedical knowledge graphs. While resources such as the IUPHAR/BPS Guide to Pharmacology [14] acknowledge incomplete coverage in narrative form, systematic per-gene gap documentation with categorized absence reasons has few precedents. We suggest this practice represents a methodological contribution for transparent resource development.
 
 ### 4.3 Benchmark Validation and Boundary Conditions
 
@@ -250,13 +254,19 @@ nx.write_graphml(subgraph, "opioid_pathway.graphml")
 
 ```python
 # Retrieve GTEx tissue expression for all Track B pain genes
+track_b_expr = []
 for node, data in G.nodes(data=True):
     if data.get("track") == "B" and data.get("node_type") == "gene/protein":
         gene = data["node_name"]
         expr = data.get("gtex_median_tpm", {})
-        spinal = expr.get("Spinal_Cord_cervical_c-1", "N/A")
-        tibial = expr.get("Nerve_Tibial", "N/A")
-        print(f"{gene}: Spinal={spinal}, Tibial={tibial}")
+        track_b_expr.append({
+            "gene": gene,
+            "spinal": expr.get("Spinal_Cord_cervical_c-1", "N/A"),
+            "tibial": expr.get("Nerve_Tibial", "N/A")
+        })
+# Display first 5 Track B genes
+for item in track_b_expr[:5]:
+    print(f"{item['gene']}: Spinal={item['spinal']}, Tibial={item['tibial']}")
 ```
 
 ### 5.4 Identifying Bridge Genes Between Tracks
