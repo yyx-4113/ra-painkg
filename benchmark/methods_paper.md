@@ -291,19 +291,6 @@ top_bridges = sorted(scores.items(), key=lambda x: x[1], reverse=True)[:10]
 ---
 
 
-## Figure Captions
-
-**Figure 1.** Top 20 hub nodes ranked by betweenness centrality in RA-PainKG. Node size is proportional to betweenness score.
-
-**Figure 2.** Degree distribution of RA-PainKG (log-log scale) with power-law fit. The scale-free topology is characteristic of biological networks.
-
-**Figure 3.** Comparison of centrality distributions between Track A (immune-inflammation, n = 106 genes) and Track B (nociception-pain transduction, n = 122 genes) gene subsets. Betweenness, degree, closeness, and eigenvector centrality are shown as violin plots. Track B genes show systematically lower centrality across all metrics, consistent with their sparser representation in PrimeKG.
-
-**Figure 4.** Node type composition (pie chart, 10 entity types) and edge relation distribution (bar chart, top 10 of 24 relation types) in RA-PainKG. Protein-protein interactions account for 2,400 edges (1.9%), with the remaining 124,826 edges distributed across pathway, bioprocess, drug-target, and other relation types.
-
-**Figure 5.** Core signaling network visualization showing the top 50 hub nodes and their interconnections. Node color indicates track assignment.
-
-**Figure 6.** Pathway subnetwork visualizations for the nine curated pain signaling pathways mapped onto RA-PainKG. Each panel shows a single pathway: TRP channels, voltage-gated sodium channels, neurotrophin signaling, opioid signaling, MAPK pathway, JAK-STAT pathway, prostaglandin pathway, complement cascade, and GABA/glycine receptors. Node color indicates track assignment (Track A, Track B, or Dual). Edge directionality indicates known signaling relationships.
 
 ## Supplementary Materials
 
@@ -328,23 +315,7 @@ top_bridges = sorted(scores.items(), key=lambda x: x[1], reverse=True)[:10]
 
 **Figure 3.** Comparison of centrality distributions between Track A (immune-inflammation, n = 106 genes) and Track B (nociception-pain transduction, n = 122 genes) gene subsets. Betweenness, degree, closeness, and eigenvector centrality are shown as violin plots. Track B genes show systematically lower centrality across all metrics, consistent with their sparser representation in PrimeKG.
 
-**Figure 4.** Node type composition (pie chart, 10 entity types) and edge relation distribution (bar chart, top 10 of 24 relation types) in RA-PainKG. Protein-protein interactions account for 2,400 edges (1.9%), with the remaining 124,826 edges distributed across pathway, bioprocess, drug-target, and other relation types.
-
-**Figure 5.** Core signaling network visualization showing the top 50 hub nodes and their interconnections. Node color indicates track assignment.
-
-**Figure 6.** Pathway subnetwork visualizations for the nine curated pain signaling pathways mapped onto RA-PainKG. Each panel shows a single pathway: TRP channels, voltage-gated sodium channels, neurotrophin signaling, opioid signaling, MAPK pathway, JAK-STAT pathway, prostaglandin pathway, complement cascade, and GABA/glycine receptors. Node color indicates track assignment (Track A, Track B, or Dual). Edge directionality indicates known signaling relationships.
-
-## Supplementary Materials
-
-- **Table S1:** Complete 165-gene pain gene list with functional categories, PrimeKG match status, and track assignments
-- **Table S2:** Full edge relation type distribution (all 24 types)
-- **Table S3:** Coverage-gap analysis: 72 genes absent from PrimeKG with functional categories and suggested alternative identifiers
-- **Table S4:** Multi-split benchmark results for all 11 KG variants
-- **Table S5:** Paired statistical comparisons with delta-r confidence intervals
-- **Table S6:** KG variant structural characteristics
-- **Supplementary Methods:** Spectral decomposition details, nonlinear model comparison (MLP vs ridge), GEARS architecture comparison, evaluation protocol, power analysis
-- **Figure S1-S6:** Supplementary figures (degree distribution, track comparison, composition, core network, pathway subnetworks)
-
+**Figure 4.** Node type composition (pie chart, 10 entity types) and edge relat
 
 ## AI Usage Statement
 
