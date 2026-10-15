@@ -42,7 +42,7 @@ submission_BMC/
 ## Before you submit (author to-do)
 
 1. **Read REVISION_NOTE.md** — the prior-draft coverage-gap claim ("72 missing genes / 120 (62.5%) matched") was false and has been corrected to verified 188/192 = 97.9% recovery. The reframing has been ratified by the author (2026-10-15/16).
-2. **GitHub repository (data availability):** https://github.com/yyx-4113/ra-painkg must be public (✅ verified 2026-10-16) AND should carry a **release tag** matching the submitted version, with the README citation updated from the stale "Scientific Data" target to *BMC Bioinformatics*. (AI cannot create git tags — author action.)
+2. **GitHub repository (data availability):** ✅ **DONE 2026-10-16** — repo is public; README citation updated to *BMC Bioinformatics* (author = Yongxin Yang); master pushed; tagged release **v1.0.0** created at https://github.com/yyx-4113/ra-painkg/releases/tag/v1.0.0 with the 7 graph artifacts (final KG graphml/pkl, node/edge tables, track A/B subgraphs, summary JSON) + `MANIFEST_SHA256.txt`. The graph files are gitignored (large) and therefore distributed as **release assets**, not in the git tree — this is why the manuscript's Availability statement now points to the release, not the bare repo. Source-data DOIs (PrimeKG, Norman et al.) unchanged.
 3. **Confirm APC** amount and institutional/open-access funding at submission.
 4. **Verify current JIF/SCIE status** at mjl.clarivate.com / journal site immediately before final submit (metrics above are 2026-10-15/16 snapshots).
 5. Self-citation [19] repo title can be updated if desired.
