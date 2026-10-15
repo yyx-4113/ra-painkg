@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 # Consistent styling
 plt.rcParams.update({
-    "figure.dpi": 150,
+    "figure.dpi": 300,
     "savefig.dpi": 300,
     "savefig.bbox": "tight",
     "font.size": 10,

@@ -1,0 +1,13 @@
+# RA-PainKG v1.0.0 — Release Asset Manifest (SHA-256)
+# Corresponding to the BMC Bioinformatics submission, 2026-10-16.
+# In the repository these files live under output/; in the GitHub Release
+# (https://github.com/yyx-4113/ra-painkg/releases/tag/v1.0.0) they are at the
+# release root. Verify after download with:  sha256sum -c MANIFEST_SHA256.txt
+
+36ac5ca7c2b837385109e2e6faf0aaf848c3d0a8e477dccd8b4c4f56e69b84d1  RA_PainKG_final.graphml
+933bca440aa3118d0067e4ffa589982ae3081fb26f7f72b6810f5b7dd6ee4724  RA_PainKG_final.pkl
+5e5ddb9023e46e3fb49906d25653d1aad67892cbc52736c14a573e97475ff693  RA_PainKG_nodes_final.csv
+1334414d0866fb08441a8172b46ca73ed8c8c30c2504d05b727b76a9b42eafbc  RA_PainKG_edges_final.csv
+f60bb38dd9c51ec1fe18b369d9720aabd090197dcc04dca2e1d1d395e2a31c7e  RA_PainKG_trackA.graphml
+611967819f90d51e6ea089be2881978f7bcffc065f516cfdff18bf4101de3a9f  RA_PainKG_trackB.graphml
+e0fa9c9466f01af0eb29e3005578ed4c751508a6063165c0b3c77ed00be8c040  RA_PainKG_summary.json

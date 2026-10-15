@@ -33,7 +33,7 @@ top_hubs = sorted(bc.items(), key=lambda x: -x[1])[:10]
 ## Installation
 
 ```bash
-git clone https://github.com/[username]/ra-painkg.git
+git clone https://github.com/yyx-4113/ra-painkg.git
 cd ra-painkg
 pip install -r requirements.txt
 ```
@@ -97,13 +97,23 @@ ra-painkg/
 
 ## Citation
 
+## Submission
+
+Submitted to **BMC Bioinformatics** (ISSN 1471-2105; SCIE, Journal Impact Factor 4.4, 2025). This repository archives the knowledge-graph artifacts under the tagged release **v1.0.0**; the manuscript and submission package are under `submission_BMC/`.
+
+## Data availability
+
+- **Code & benchmark results:** in this repository (`src/`, `benchmark/`), MIT-licensed.
+- **Knowledge-graph files** (GraphML, CSV, pickle): archived as GitHub Release **v1.0.0** assets at <https://github.com/yyx-4113/ra-painkg/releases/tag/v1.0.0>, with SHA-256 checksums in `MANIFEST_SHA256.txt`.
+- **Source data:** PrimeKG v1.0 (Harvard Dataverse, DOI: 10.7910/DVN/IXA7BM); GTEx v8 (dbGaP: phs000424.v8.p2); Norman et al. Perturb-seq (Harvard Dataverse, DOI: 10.7910/DVN/R9JDLS).
+
 If you use RA-PainKG in your research, please cite:
 
 ```bibtex
 @article{ra-painkg2026,
   title = {RA-PainKG: A Tissue-Specific Knowledge Graph for Rheumatoid Arthritis Pain Signaling},
-  author = {[Authors]},
-  journal = {Scientific Data},
+  author = {Yongxin Yang},
+  journal = {BMC Bioinformatics},
   year = {2026},
   doi = {[to be assigned]}
 }
