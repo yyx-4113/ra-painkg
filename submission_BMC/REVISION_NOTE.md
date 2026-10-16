@@ -50,3 +50,29 @@ Acting as editor, I convened a 4-expert independent panel (A1 domain / A2 design
 - T1-4: DRD2/COMT are flagged as future-release additions (not silently inserted); author to confirm inclusion or keep as stated limitation.
 - T3-1: article type kept as Research (editor ruling); if BMC desk-check prefers, switch to Database.
 - T2-3: optionally enumerate the 10 inflammation-only / 26 nociception-only genes grounding the decoupling claim.
+
+## 6. Round 2 independent expert panel review (2026-10-16)
+
+Re-convened the same 4-expert independent panel (A1–A4) with enforced independence (no access to Round 1 files) to re-verify the revised manuscript and catch residual defects. Consolidated report: `review/round2/REVIEW_round2_2026-10-16.md`; expert files `review/round2/A1_domain.md`…`A4_venue.md`.
+
+**All four returned Minor revision.** Round 1 Tier-0 defects confirmed FIXED (A3: every graph/track number matches raw data exactly; forbidden fingerprints absent; A2: benchmark honest-reframing numbers reproduced, vocab mismatch 265 vs 2000 confirmed).
+
+**Editor-verified recomputation (independence check) and fixes applied in `manuscript_BMC.md`/`.docx` (14/14 docx checks pass):**
+- **Zero-PPI (L75):** Round 1 audit-trail "50% Track B / 20% Track A" was itself wrong. Induced 165-gene PPI subgraph (780 edges): Track B 30/122 = **24.6%**, Track A 19/106 = **17.9%**. Corrected with explicit definition; decoupling conclusion (Track B sparser) holds.
+- **COMT/DRD2 (L112):** COMT is present in `track_assignments.csv` (recovered via expansion); only **DRD2** is genuinely omitted. Corrected — DRD2-only limitation; COMT noted as expansion-recovered.
+- **9 pathways (L37):** re-enumerated to match the coverage-mapped 9 in `pain_signaling_pathways.md` (TRPV1-CGRP, Nav1.7, TNFα–NGF, Opioid, JAK-STAT, MAPK, Complement, GABAergic, Prostaglandin); 20 categories pointed to Supplementary Table S1.
+- **Entity types (L67):** now lists all 10 (added `exposure`).
+- **STRING r (L49):** corrected "r = 0.000" → "overall r = 0.0003; pain-subset r = 0.0008" (verified from `full_benchmark_results.json`).
+- **Artifact reconciliation (L39):** "4 artifacts" reworded so NAPE-PLD/RANKL are shown alias-resolved as present (NAPEPLD/TNFSF11); ADRA2B = construction artifact; ACPA = non-gene.
+- **Leakage (Discussion):** explicit sentence added — RA-PainKG's 265-gene benchmark vocabulary is drawn from its own construction genes (in-construction sanity check, not independent external evaluation).
+- **Title:** "with benchmark validation" → "with transparent benchmark characterization".
+- **[19] self-citation:** "GitHub/Zenodo" → "GitHub" (no real Zenodo DOI yet; BMC accepts software citation).
+- **References:** full Vancouver renumber to ascending first-appearance order (DisGeNET [16]→L27, GTEx [17]→L29, Norman [18]→L53, GEARS [19]→L55, self [20]→L59, Nguyen [21]→L107, GO [22]→L151); list physically reordered to match.
+- **Decoupling lists verified:** 10 inflammation-only + 26 nociception-only genes enumerable; 10+26+96+33 = 165.
+
+**Residual pre-submission items (not manuscript defects):**
+- Confirm Supplementary Tables S1 (192-gene list), S3 (recovery map), S6 (Norman overlap) are present in `submission_BMC/supplementary/supplementary_tables.docx` so deposited files reproduce the headline numbers; deposit separately if absent.
+- Optional: mint a real Zenodo DOI for [19]; add zero-edge field to `benchmark_metadata.json`.
+
+**Editor decision:** All integrity-critical and minor clarity items resolved. Manuscript is scientifically honest, internally consistent, and compliant with BMC Bioinformatics soundness-only standards — **Accept pending the deposition-completeness check above**; submit as a Research article. Local commit `fa3dadf` (Round 1) and `a33d73a` (release) now pushed to GitHub (origin/master).
+
