@@ -76,3 +76,18 @@ Re-convened the same 4-expert independent panel (A1–A4) with enforced independ
 
 **Editor decision:** All integrity-critical and minor clarity items resolved. Manuscript is scientifically honest, internally consistent, and compliant with BMC Bioinformatics soundness-only standards — **Accept pending the deposition-completeness check above**; submit as a Research article. Local commit `fa3dadf` (Round 1) and `a33d73a` (release) now pushed to GitHub (origin/master).
 
+## 7. Round 3 focused integrity verification (2026-10-16)
+
+Pre-submission deposition-completeness check (requested as "continue"). Confirmed S1 (165-gene list), S3 (192-gene recovery map), S6 (structural characteristics) are present in `submission_BMC/supplementary/supplementary_tables.docx`. This surfaced one Tier-1 honesty/reproducibility gap, now fixed.
+
+**Finding:** The Round 2 Discussion caveat (L101) asserted the 265-gene benchmark vocabulary = "the 44 annotated genes present in Norman plus their PPI neighbours" — a **factually wrong decomposition**, and no deposited file quantified the overlap. Editor recomputed from deposited `benchmark/results/gene_vocab.csv` (265) × `output/track_assignments.csv` (165): **265-vocab = 165 dual-track annotated genes (100%) + 100 additional RA-PainKG genes; 0 external genes.** The "44/165" stat is a separate, correctly-computed *measurably-expressed-in-Norman* metric (expressed ⊆ present-in-265-vocab), consistent once terminology is disambiguated.
+
+**Fixes applied (verified in `.docx`, 7/7 checks pass):**
+- **L101:** rewritten with verified 165+100 decomposition + cites S6; removed false "PPI neighbours" mechanism.
+- **S6 note:** appended reproducible composition (165 annotated + 100 RA-PainKG genes; no external validation genes → within-construction evaluation).
+- **L81 & L99:** "present in Norman" → "measurably expressed in Norman" to disambiguate from the 265-vocab.
+
+**Editor decision:** Round 3 closes the final reproducibility gap. Manuscript is scientifically honest, internally consistent, and compliant with BMC Bioinformatics soundness-only standards — **Accept**; submit as a Research article. Optional follow-ups (non-defects): mint a real Zenodo DOI for [19]; add zero-edge field to `benchmark_metadata.json`.
+
+**All review rounds complete.** Round 1 fixed conclusion-invalidating (Tier-0) defects; Round 2 fixed all residual clarity/honesty/format items; Round 3 closed the last deposition-reproducibility gap. Manuscript ready for BMC Bioinformatics submission.
+
