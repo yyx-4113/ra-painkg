@@ -102,3 +102,18 @@ Per user instruction ("不要用自引文章" = do not use the self-citation), r
 - Verified in rebuilt `.docx`: 7/7 checks pass; no stray self-citation; numbering continuous [1]–[21].
 - Manuscript remains **Accept**; submit as a Research article.
 
+## 9. De-AI polish (2026-10-16)
+
+Per standing instruction, applied academic-humanizer methodology for AI-tell removal across the full manuscript. **All numbers, citation keys, and scientific claims preserved unchanged.**
+
+**Changes:**
+- Removed all **7 em-dashes** (Layer 1 hard rule): L37×2, L39, L49×3, L75, L99, L101 → recast with colons, periods, or separate sentences.
+- Removed AI-tell phrases: "to our knowledge" (L95), "demonstrates the necessity" (L83, L101), "Importantly," (L101), "We emphasize that" (L103), "a major advance" (L27), "fragmented landscape" (L29), "extensively characterized" → "thoroughly characterized" (L99).
+- Downgraded over-claiming verbs: "This demonstrates the necessity…" → "Multi-split statistics are therefore needed…" (L83) / "This argues for multi-split statistics…" (L101).
+- Split overlong clause-stacked sentences: L49 factor list (em-dash→colon + sentence break); L101 "Note also that…" split into its own sentence.
+- Kept legitimate hedging ("suggests", "may", "appears to"), passive voice, and first-person plural "we" per Layer 3.
+
+**Verification:** md + docx both pass — em-dash count = 0; all AI-tell phrases absent; 35+ key number fingerprints retained (97.9%, 188/192, 165=120+45, 72, 33, 18,069/127,226, 28,972, 98,254, 4,760, 2,400, 26.7%, 0.558/0.481, 0.503/0.542, 24.6%/17.9%, 280-fold, 68.3%, 0.0003/0.0008, 265/2,000, Δr=+0.115 p<0.001, +0.005 p=0.83, 5,045/91,205/284, EGR1–SRC, 31.7%/1,600, 58.2%, DRD2/COMT/NAPEPLD/TNFSF11/ADRA2B, [20]/[21]); reference numbering continuous [1]–[21].
+
+Manuscript remains **Accept**; submit as a Research article to BMC Bioinformatics.
+
