@@ -56,7 +56,7 @@ For validation, 128-dimensional gene embeddings were computed via spectral decom
 
 ### Implementation and AI-use disclosure
 
-Python 3.10+, ScanPy 1.12, NetworkX 3.6, NumPy, SciPy, and scikit-learn were used; total compute was approximately 12 minutes (Intel i9-13900K, 64 GB RAM). Full pipeline and processed data are at https://github.com/yyx-4113/ra-painkg [20]. During manuscript preparation the author used AI-assisted tools (OpenAI Codex CLI, GitHub Copilot, and Claude via API) for code development, literature search, and language editing. All AI-generated content was reviewed and verified by the author, who takes full responsibility for scientific accuracy, data integrity, and conclusions. No AI tool contributed to data generation or statistical computation beyond executing author-specified algorithms.
+Python 3.10+, ScanPy 1.12, NetworkX 3.6, NumPy, SciPy, and scikit-learn were used; total compute was approximately 12 minutes (Intel i9-13900K, 64 GB RAM). Full pipeline and processed data are at https://github.com/yyx-4113/ra-painkg. During manuscript preparation the author used AI-assisted tools (OpenAI Codex CLI, GitHub Copilot, and Claude via API) for code development, literature search, and language editing. All AI-generated content was reviewed and verified by the author, who takes full responsibility for scientific accuracy, data integrity, and conclusions. No AI tool contributed to data generation or statistical computation beyond executing author-specified algorithms.
 
 ## Results
 
@@ -104,7 +104,7 @@ We emphasize that the K562 benchmark cannot resolve whether domain KGs improve p
 
 ### Limitations
 
-- **Tissue coverage:** GTEx v8 lacks dorsal root ganglion (DRG) and synovium; we proxy DRG via spinal cord and tibial nerve, immune compartments via whole blood and spleen. Human DRG single-cell RNA-seq [21] could improve resolution.
+- **Tissue coverage:** GTEx v8 lacks dorsal root ganglion (DRG) and synovium; we proxy DRG via spinal cord and tibial nerve, immune compartments via whole blood and spleen. Human DRG single-cell RNA-seq [20] could improve resolution.
 - **Cell-type resolution:** GTEx provides bulk tissue TPM, masking cell-type-specific expression.
 - **Static representation:** RA-PainKG is static; it does not model condition-specific dynamics or quantitative interaction strengths.
 - **Identifier resolution:** PrimeKG node IDs are internal integers; cross-referencing with HGNC/Ensembl requires the original prime_kg.csv from the PrimeKG repository.
@@ -148,7 +148,7 @@ Not applicable.
 Not applicable.
 
 ### Availability of data and materials
-All code, processed adjacency matrices, and benchmark results are available in the repository at https://github.com/yyx-4113/ra-painkg under the MIT license. The knowledge-graph files (GraphML, CSV, pickle) are archived as GitHub Release v1.0.0 assets at https://github.com/yyx-4113/ra-painkg/releases/tag/v1.0.0, with SHA-256 checksums listed in MANIFEST_SHA256.txt. The Norman et al. Perturb-seq dataset is at Harvard Dataverse (DOI: 10.7910/DVN/R9JDLS); PrimeKG v1.0 at Harvard Dataverse (DOI: 10.7910/DVN/IXA7BM); Gene Ontology annotations are from the Gene Ontology Consortium [22].
+All code, processed adjacency matrices, and benchmark results are available in the repository at https://github.com/yyx-4113/ra-painkg under the MIT license. The knowledge-graph files (GraphML, CSV, pickle) are archived as GitHub Release v1.0.0 assets at https://github.com/yyx-4113/ra-painkg/releases/tag/v1.0.0, with SHA-256 checksums listed in MANIFEST_SHA256.txt. The Norman et al. Perturb-seq dataset is at Harvard Dataverse (DOI: 10.7910/DVN/R9JDLS); PrimeKG v1.0 at Harvard Dataverse (DOI: 10.7910/DVN/IXA7BM); Gene Ontology annotations are from the Gene Ontology Consortium [21].
 
 ### Competing interests
 The author declares no competing interests.
@@ -202,8 +202,6 @@ The author thanks the Norman lab, the PrimeKG development team, the GTEx Consort
 
 [19] Roohani Y, Huang K, Leskovec J. Predicting transcriptional outcomes of novel multigene perturbations with GEARS. Nat Biotechnol. 2024;42:591–600.
 
-[20] Yang Y. RA-PainKG: A tissue-specific knowledge graph for rheumatoid arthritis pain signaling — construction protocol, network analysis, and coverage-gap documentation. GitHub. 2026. Available at: https://github.com/yyx-4113/ra-painkg.
+[20] Nguyen MQ, von Buchholtz LJ, Reker AN, Ryba NJ, Davidson S. Single-nucleus transcriptomic analysis of human dorsal root ganglion sensory neurons. Pain. 2021;162(7):2032–2046.
 
-[21] Nguyen MQ, von Buchholtz LJ, Reker AN, Ryba NJ, Davidson S. Single-nucleus transcriptomic analysis of human dorsal root ganglion sensory neurons. Pain. 2021;162(7):2032–2046.
-
-[22] Ashburner M, Ball CA, Blake JA, et al. Gene Ontology: tool for the unification of biology. Nat Genet. 2000;25(1):25–29.
+[21] Ashburner M, Ball CA, Blake JA, et al. Gene Ontology: tool for the unification of biology. Nat Genet. 2000;25(1):25–29.

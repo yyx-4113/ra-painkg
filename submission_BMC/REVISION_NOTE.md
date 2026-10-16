@@ -91,3 +91,14 @@ Pre-submission deposition-completeness check (requested as "continue"). Confirme
 
 **All review rounds complete.** Round 1 fixed conclusion-invalidating (Tier-0) defects; Round 2 fixed all residual clarity/honesty/format items; Round 3 closed the last deposition-reproducibility gap. Manuscript ready for BMC Bioinformatics submission.
 
+## 8. Author instruction: remove self-citation (2026-10-16)
+
+Per user instruction ("不要用自引文章" = do not use the self-citation), removed the author's self-citation (RA-PainKG repository) from the reference list.
+
+- The self-citation entry was deleted. Reference list is now numbered **[1]–[21]**.
+- Re-numbering: Nguyen DRG scRNA-seq promoted [21]→**[20]**; Gene Ontology promoted [22]→**[21]**. In-text citations updated (L107 → [20], L151 → [21]).
+- **Repository URL retained** in Methods (L59) and Data availability (L151) as a plain URL (no citation number) — compliant with BMC's *Availability of data and materials* requirement; no DOI needed.
+- The prior optional note "mint a Zenodo DOI for [19]" (Section 7) is now **moot**: the self-citation no longer exists. ([19] is GEARS, Roohani et al. 2024 — a real published paper, not the author's repo.)
+- Verified in rebuilt `.docx`: 7/7 checks pass; no stray self-citation; numbering continuous [1]–[21].
+- Manuscript remains **Accept**; submit as a Research article.
+
